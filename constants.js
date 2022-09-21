@@ -1,7 +1,7 @@
 const infoConnexion = {
     client: 'mssql',
     connection: {
-        host: 'sv55.cmaisonneuve.qc.ca,1433',
+        host: 'sv55.cmaisonneuve.qc.ca',
         user: '5D1Equipe04',
         password: 'ExBVLhPiW0VNzvNYhxVgr8HdRY2vaF',
         database: '5D1Equipe04',
