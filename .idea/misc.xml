@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/activity_main.xml" value="0.14447463768115942" />
+        <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/fragment_dashboard.xml" value="0.14447463768115942" />
+        <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/fragment_home.xml" value="0.14447463768115942" />
+        <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/register.xml" value="0.14447463768115942" />
         <entry key="..\:/Users/lauzo/Documents/Running_buddy/frontend_android/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1835" />
         <entry key="..\:/Users/lauzo/Documents/Running_buddy/frontend_android/app/src/main/res/layout/activity_main.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/lauzo/Documents/Running_buddy/frontend_android/app/src/main/res/layout/fragment_dashboard.xml" value="0.22135416666666666" />
