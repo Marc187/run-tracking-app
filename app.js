@@ -10,6 +10,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/courses', courses);
+app.get('/', (req, res) => {
+    res.send("<h1>Hello World!</h1>")
+})
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);
