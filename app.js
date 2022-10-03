@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use('/courses', courses);
 app.get('/', (req, res) => {
-    res.send("<h1>Hello World!</h1>")
+    res.send("<h1>Hello World! test heroku </h1>")
 })
 
 app.listen(PORT, () => {
