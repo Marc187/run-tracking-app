@@ -11,7 +11,8 @@ const swaggerDocument = YAML.load('./documentation_api.yaml')
 // Importation des fichiers de routes
 const course = require('./routes/course.js');
 const courses = require('./routes/courses.js');
-const connexion = require('./routes/connexion');
+const login = require('./routes/login');
+const register = require('./routes/register');
 
 // Middlewares nécessaires à l'application
 app.use(cors());
@@ -20,6 +21,8 @@ app.use(express.json());
 // Routes
 app.use('/course', course);
 app.use('/courses', courses);
+app.use('/login', login);
+app.use('/register', register);
 
 // Route pour la documentation
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))

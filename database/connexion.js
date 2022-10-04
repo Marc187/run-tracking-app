@@ -2,16 +2,16 @@ const knexModule = require('knex');
 const infoConnexion = require('../constants');
 const knex = knexModule(infoConnexion);
 
-function createUser (user, cb) {
-    return knex('INSERT INTO Utilisateurs (nom_utilisateur, nom, email, password) VALUES (?,?,?)', user, (err) => {
-        cb(err)
-    });
+function createUser(nom_utilisateur, nom, email, password) {
+    return knex('courses')
+        .returning('id')
+        .insert({ nom_utilisateur, nom, email, password })
+        
 }
 
-function findUserByEmail (email, cb) {
-    return database.get(`SELECT * FROM Utilisateurs WHERE email = ?`, [email], (err, row) => {
-        cb(err, row)
-    });
+function findUserByEmail (email) {
+    return knex('Utilisateurs')
+        .where('email', email)
 }
 
 module.exports = {
