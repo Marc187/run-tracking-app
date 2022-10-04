@@ -10,7 +10,6 @@ router.post('/', async (req, res) => {
         const nom = req.body.nom;
         const email = req.body.email;
         const password = bcrypt.hashSync(req.body.password);
-
         request.createUser([nom_utilisateur, nom, email, password], (err) => {
             if (err) {
                 console.log(err);
@@ -19,6 +18,7 @@ router.post('/', async (req, res) => {
             }
             request.findUserByEmail(email, (err, user) => {
                 if (err) return res.status(500).send('Server error');
+                console.log("test");
                 res.status(200).send({
                     "user": user
                 });
