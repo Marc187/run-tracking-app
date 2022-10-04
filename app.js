@@ -11,6 +11,7 @@ const swaggerDocument = YAML.load('./documentation_api.yaml')
 
 // Importation des fichiers de routes
 const courses = require('./routes/courses');
+const connexion = require('./routes/connexion');
 
 
 // Middlewares nécessaires à l'application
