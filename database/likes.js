@@ -4,7 +4,8 @@ const knex = knexModule(infoConnexion);
 
 function getLike(id_course, id_utilisateur) {
     return knex('likes')
-        .where('id', id)
+        .where('id_course ', id_course)
+        .andWhere('id_utilisateur', id_utilisateur)
 }
 
 function addLike(id_course, id_utilisateur) {
@@ -15,7 +16,8 @@ function addLike(id_course, id_utilisateur) {
 
 function deleteLike(id_course, id_utilisateur) {
     return knex('likes')
-        .where('id_course', id_course, 'id_utilisateur', id_utilisateur)
+        .where('id_course ', id_course)
+        .andWhere('id_utilisateur', id_utilisateur)
         .del()
 }
 
