@@ -2,17 +2,16 @@ const express = require('express');
 const request = require('../database/courses.js');
 const router = express.Router();
 
-router.get('/:id_course', async (req, res) => {
+router.get('/:id_utilisateur', async (req, res) => {
     try {
-        const id_course = req.params.id_course
-        const data = await request.getCourse(id_course)
+        const id_utilisateur = req.params.id_utilisateur
+        const data = await request.getCourses(id_utilisateur)
 
         if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course avec cet id trouvée' });
+            return res.status(404).json({ message: 'Aucune course enregistrée à cet utilistateur' });
         }
-        
-        console.log(data[0])
-        res.status(200).json(data[0])
+
+        res.status(200).json(data)
     } catch (error) {
         res.status(500).json(error.message);
     }

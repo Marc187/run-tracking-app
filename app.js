@@ -10,17 +10,19 @@ const swaggerDocument = YAML.load('./documentation_api.yaml')
 
 
 // Importation des fichiers de routes
-const courses = require('./routes/courses');
-
+const course = require('./routes/course.js');
+const courses = require('./routes/courses.js');
 
 // Middlewares nécessaires à l'application
 app.use(cors());
 app.use(express.json());
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Routes
+app.use('/course', course);
 app.use('/courses', courses);
 
+// Route pour la documentation
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);

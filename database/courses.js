@@ -2,12 +2,12 @@ const knexModule = require('knex');
 const infoConnexion = require('../constants');
 const knex = knexModule(infoConnexion);
 
-
-function getCourse(id) {
-    return knex('Courses')
-        .where('id', id)
+function getCourses(id_utilisateur) {
+    return knex('courses')
+        .where('id_utilisateur', id_utilisateur)
 }
 
+
 module.exports = {
-    getCourse,
+    getCourses,
 };

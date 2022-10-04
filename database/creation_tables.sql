@@ -32,8 +32,8 @@ GO
 CREATE TABLE courses (
 	id INT PRIMARY KEY IDENTITY(1, 1),
 	id_utilisateur INT 
-		FOREIGN KEY REFERENCES utilisateurs(id)
-		ON DELETE CASCADE,
+		FOREIGN KEY REFERENCES utilisateurs(id),
+		-- ON DELETE CASCADE,
 	distance FLOAT,
 	duree TIME,
 	date DATE
