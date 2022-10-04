@@ -35,7 +35,7 @@ CREATE TABLE courses (
 		FOREIGN KEY REFERENCES utilisateurs(id),
 		-- ON DELETE CASCADE,
 	distance FLOAT,
-	duree TIME,
+	duree VARCHAR(255),
 	date DATE
 )
 GO
