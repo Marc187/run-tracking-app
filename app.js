@@ -13,7 +13,7 @@ const course = require('./routes/course.js');
 const courses = require('./routes/courses.js');
 const login = require('./routes/login');
 const register = require('./routes/register');
-const like = require('./routes/likes');
+const like = require('./routes/like');
 const abonnements = require('./routes/abonnements');
 
 // Middlewares nécessaires à l'application
