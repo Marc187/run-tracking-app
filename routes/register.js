@@ -3,8 +3,9 @@ const request = require('../database/connexion.js');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-router.post('/register', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
+        
         const nom_utilisateur = req.body.nom_utilisateur;
         const nom = req.body.nom;
         const email = req.body.email;

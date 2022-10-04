@@ -20,8 +20,8 @@ router.get('/:id_course', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const id_utilisateur = req.body.id_utilisateur
-        const distance = req.body.distance|| null
-        const duree = req.body.duree|| null
+        const distance = req.body.distance || null
+        const duree = req.body.duree || null
         const date = Date.now().toString()
 
         console.log(date, distance, duree, id_utilisateur)

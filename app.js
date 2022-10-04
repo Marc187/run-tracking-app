@@ -23,11 +23,11 @@ app.use(express.json());
 // Routes
 app.use('/course', course);
 app.use('/courses', courses);
-app.use('like', like);
+app.use('/like', like);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/subscribtions', subscribtions);
-app.use('subscribe', subscribtions);
+app.use('/subscribe', subscribtions);
 
 // Route pour la documentation
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))

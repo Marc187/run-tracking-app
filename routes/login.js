@@ -3,7 +3,7 @@ const request = require('../database/connexion.js');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-router.post('/login', (req, res) => {
+router.post('/', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     request.findUserByEmail(email, (err, user) => {
