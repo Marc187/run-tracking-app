@@ -13,7 +13,7 @@ router.get('/:id_course/:id_utilisateur', async (req, res) => {
         
         console.log(data)
         if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course ou utilisateur avec cet id trouvée' });
+            return res.status(200).json({ liked: false });
         }
         
         res.status(200).json({ liked: true })

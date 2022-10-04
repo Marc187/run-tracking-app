@@ -15,7 +15,8 @@ function addSubscribe(id_utilisateur_suivi, id_utilisateur_suivant) {
 
 function deleteSubscribe(id_utilisateur_suivi, id_utilisateur_suivant) {
     return knex('abonnements')
-        .where('id_utilisateur_suivi', id_utilisateur_suivi, 'id_utilisateur_suivant', id_utilisateur_suivant)
+        .where('id_utilisateur_suivi', id_utilisateur_suivi) 
+        .andWhere('id_utilisateur_suivant', id_utilisateur_suivant)
         .del()
 }
 
