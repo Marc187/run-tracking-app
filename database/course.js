@@ -8,6 +8,13 @@ function getCourse(id) {
         .where('id', id)
 }
 
+function addCourse(date, distance, duree, id_utilisateur) {
+    return knex('courses')
+        .returning('id')
+        .insert({ date, distance, duree, id_utilisateur })
+        
+}
+
 function deleteCourse(id) {
     return knex('courses')
         .where('id', id)
@@ -16,5 +23,6 @@ function deleteCourse(id) {
 
 module.exports = {
     getCourse,
+    addCourse,
     deleteCourse
 };

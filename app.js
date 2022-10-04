@@ -8,7 +8,6 @@ const YAML = require('yamljs')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = YAML.load('./documentation_api.yaml')
 
-
 // Importation des fichiers de routes
 const course = require('./routes/course.js');
 const courses = require('./routes/courses.js');
