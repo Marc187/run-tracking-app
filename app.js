@@ -13,6 +13,8 @@ const course = require('./routes/course.js');
 const courses = require('./routes/courses.js');
 const login = require('./routes/login');
 const register = require('./routes/register');
+const like = require('./routes/like');
+const subscribtions = require('./routes/subscribtions');
 
 // Middlewares nécessaires à l'application
 app.use(cors());
@@ -21,8 +23,11 @@ app.use(express.json());
 // Routes
 app.use('/course', course);
 app.use('/courses', courses);
+app.use('like', like);
 app.use('/login', login);
 app.use('/register', register);
+app.use('/subscribtions', subscribtions);
+app.use('subscribe', subscribtions);
 
 // Route pour la documentation
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
