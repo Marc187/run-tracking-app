@@ -30,11 +30,6 @@ router.post('/:id_course/:id_utilisateur', async (req, res) => {
         console.log(id_course, id_utilisateur)
         const data = await request.addLike(id_course, id_utilisateur)
         
-        console.log(data)
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course ou utilisateur avec cet id trouvée' });
-        }
-        
         res.status(200).json({ message: "success" })
     } catch (error) {
         res.status(500).json(error.message);
@@ -48,11 +43,6 @@ router.delete('/:id_course/:id_utilisateur', async (req, res) => {
 
         console.log(id_course, id_utilisateur)
         const data = await request.deleteLike(id_course, id_utilisateur)
-        
-        console.log(data)
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course ou utilisateur avec cet id trouvée' });
-        }
         
         res.status(200).json({ message: "success" })
     } catch (error) {
