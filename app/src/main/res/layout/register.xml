@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/password1Register"
+        android:id="@+id/passwordRegister"
         android:layout_width="325dp"
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
@@ -42,29 +42,14 @@
         android:id="@+id/emailRegister"
         android:layout_width="325dp"
         android:layout_height="55dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRegisterTitle" />
-
-    <EditText
-        android:id="@+id/password2Register"
-        android:layout_width="325dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="confirmer mot de passe"
-        android:inputType="textPassword"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password1Register" />
+        app:layout_constraintTop_toBottomOf="@+id/prenomNomRegister" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -84,7 +69,7 @@
         android:id="@+id/tvLoginFromRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:text="Vous avez déjà un compte?"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,5 +99,32 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password2Register" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordRegister" />
+
+    <EditText
+        android:id="@+id/usernameRegister"
+        android:layout_width="325dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="nom d'utilisateur"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgRegisterLogo" />
+
+    <EditText
+        android:id="@+id/prenomNomRegister"
+        android:layout_width="325dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="prénom et nom"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameRegister" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

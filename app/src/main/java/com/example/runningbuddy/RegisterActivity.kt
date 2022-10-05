@@ -2,22 +2,21 @@ package com.example.runningbuddy
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.runningbuddy.databinding.RegisterBinding
 
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var binding : RegisterBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.register)
+        binding = RegisterBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        val tvToLogin : TextView = findViewById(R.id.tvLoginFromRegister2)
-        tvToLogin.setOnClickListener{switchToLogin()}
-        val btnRegister : Button =  findViewById(R.id.btnRegister)
-        btnRegister.setOnClickListener{register()}
+        binding.tvLoginFromRegister2.setOnClickListener{switchToLogin()}
+        binding.btnRegister.setOnClickListener{register()}
 
     }
 
