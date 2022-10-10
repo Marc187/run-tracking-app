@@ -24,13 +24,28 @@ class RegisterActivity : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
+
+        // Get info from edit text
         findViewById<EditText>(R.id.usernameRegister).setText(registerViewModel.username)
         findViewById<EditText>(R.id.usernameRegister).addTextChangedListener {
             registerViewModel.username = it.toString()
         }
+        findViewById<EditText>(R.id.prenomNomRegister).setText(registerViewModel.nom)
+        findViewById<EditText>(R.id.prenomNomRegister).addTextChangedListener {
+            registerViewModel.nom = it.toString()
+        }
+        findViewById<EditText>(R.id.emailRegister).setText(registerViewModel.email)
+        findViewById<EditText>(R.id.emailRegister).addTextChangedListener {
+            registerViewModel.email = it.toString()
+        }
+        findViewById<EditText>(R.id.passwordRegister).setText(registerViewModel.password)
+        findViewById<EditText>(R.id.passwordRegister).addTextChangedListener {
+            registerViewModel.password = it.toString()
+        }
+
 
         btnRegister.setOnClickListener{
-          registerViewModel.createJsonRegister()
+          registerViewModel.createUser()
         }
 
     }

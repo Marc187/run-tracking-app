@@ -11,19 +11,8 @@ import org.json.JSONObject
 
 
 class RegisterRepository(private val application: Application) {
-    fun postUser(username: String, nom: String, email: String, password: String) {
+    fun postUser(user: JSONObject) {
         val queue = Volley.newRequestQueue(application)
-        val user = JSONObject()
-        try {
-            //input your API parameters
-            user.put("nom_utilisateur", username)
-            user.put("nom", nom)
-            user.put("email", email)
-            user.put("password", password)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-
         val r = JsonObjectRequest(
             Request.Method.POST,
             "https://projet3-running-buddy.herokuapp.com/register", user,
