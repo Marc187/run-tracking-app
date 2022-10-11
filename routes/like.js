@@ -1,8 +1,8 @@
 const express = require('express');
 const request = require('../database/likes.js');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 
+// Route to get the number of likes for a course
 router.get('/:id_course/:id_utilisateur', async (req, res) => {
     try {
         const id_course = req.params.id_course
@@ -22,6 +22,7 @@ router.get('/:id_course/:id_utilisateur', async (req, res) => {
     }
 })
 
+// Route to add a like to a course
 router.post('/:id_course/:id_utilisateur', async (req, res) => {
     try {
         const id_course = req.params.id_course
@@ -36,6 +37,7 @@ router.post('/:id_course/:id_utilisateur', async (req, res) => {
     }
 })
 
+// Route to delete a like from a course
 router.delete('/:id_course/:id_utilisateur', async (req, res) => {
     try {
         const id_course = req.params.id_course

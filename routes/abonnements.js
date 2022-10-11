@@ -1,8 +1,8 @@
 const express = require('express');
 const request = require('../database/abonnements.js');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 
+// Route to get the number of subscriptions for a user
 router.get('/:id_utilisateur', async (req, res) => {
     try {
         const id_utilisateur = req.params.id_utilisateur
@@ -21,6 +21,7 @@ router.get('/:id_utilisateur', async (req, res) => {
     }
 })
 
+// Route to add a subscription to a user
 router.post('/:id_utilisateur_suivi/:id_utilisateur_suivant', async (req, res) => {
     try {
         const id_utilisateur_suivi = req.params.id_utilisateur_suivi
@@ -40,6 +41,7 @@ router.post('/:id_utilisateur_suivi/:id_utilisateur_suivant', async (req, res) =
     }
 })
 
+// Route to delete a subscription from a user
 router.delete('/:id_utilisateur_suivi/:id_utilisateur_suivant', async (req, res) => {
     try {
         const id_utilisateur_suivi = req.params.id_utilisateur_suivi

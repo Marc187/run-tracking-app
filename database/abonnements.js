@@ -2,17 +2,20 @@ const knexModule = require('knex');
 const infoConnexion = require('../constants');
 const knex = knexModule(infoConnexion);
 
+// Function to get the number of subscribtions for a user
 function getSubscriptions(id_utilisateur) {
     return knex('abonnements')
         .where('id', id_utilisateur)
 }
 
+// Function to add a subscription to a user
 function addSubscribe(id_utilisateur_suivi, id_utilisateur_suivant) {
     return knex('abonnements')
         .insert({ id_utilisateur_suivi, id_utilisateur_suivant })
         
 }
 
+// Function to delete a subscription from a user
 function deleteSubscribe(id_utilisateur_suivi, id_utilisateur_suivant) {
     return knex('abonnements')
         .where('id_utilisateur_suivi', id_utilisateur_suivi) 
