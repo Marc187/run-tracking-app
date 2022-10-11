@@ -22,10 +22,11 @@ class RegisterActivity : AppCompatActivity() {
         val tvLoginFromRegister2 = findViewById<TextView>(R.id.tvLoginFromRegister2)
         tvLoginFromRegister2.setOnClickListener{switchToLogin()}
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        // Set the viewmodel to not get deleted if we destroyed this activity
         registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
 
-        // Get info from edit text
+        // Get info from edit text and attach it to the Viemodel
         findViewById<EditText>(R.id.usernameRegister).setText(registerViewModel.username)
         findViewById<EditText>(R.id.usernameRegister).addTextChangedListener {
             registerViewModel.username = it.toString()

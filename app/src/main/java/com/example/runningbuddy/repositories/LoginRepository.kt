@@ -26,7 +26,10 @@ class LoginRepository (private val application: Application) {
             Request.Method.POST,
             "https://projet3-running-buddy.herokuapp.com/login", user,
             {
+                MainActivity.TOKEN = it.getString("token")
+                println(MainActivity.TOKEN)
                 val i = Intent(application, MainActivity::class.java)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 application.startActivity(i)
             },
             {

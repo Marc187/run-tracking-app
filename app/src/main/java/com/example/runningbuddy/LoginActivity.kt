@@ -1,5 +1,6 @@
 package com.example.runningbuddy
 
+import LoginViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
@@ -17,7 +18,6 @@ import com.android.volley.toolbox.Volley
 import com.example.runningbuddy.databinding.LoginBinding
 import com.example.runningbuddy.models.User
 import com.example.runningbuddy.repositories.LoginRepository
-import com.example.runningbuddy.viewmodels.LoginViewModel
 import com.example.runningbuddy.viewmodels.RegisterViewModel
 import com.google.gson.Gson
 
@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnConnexion.setOnClickListener{
-            loginViewModel.createJsonRegister()
+            loginViewModel.postUser()
         }
 
 
