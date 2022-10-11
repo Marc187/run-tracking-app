@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.runningbuddy.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_enregistrercourse"
+        android:name="com.example.runningbuddy.ui.enregistrercourse.EnregistrerCourseFragment"
+        android:label="@string/title_enregistrercourse"
+        tools:layout="@layout/fragment_enregistrer_course" />
 
     <fragment
         android:id="@+id/navigation_notifications"
