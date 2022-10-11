@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
             expiresIn: expiresIn
         });
         
-        res.status(200).send({"access_token": accessToken, "expires_in": expiresIn });
+        res.status(200).send({"token": accessToken });
     }
     } catch (error) {
         res.status(500).json(error.message);
