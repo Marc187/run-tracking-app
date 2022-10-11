@@ -1,23 +1,15 @@
-package com.example.runningbuddy.viewmodels
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import org.json.JSONException
-import org.json.JSONObject
+import com.example.runningbuddy.repositories.LoginRepository
 
 @Suppress("RedundantVisibilityModifier")
 class LoginViewModel (application: Application) : AndroidViewModel(application) {
+
+    private var loginRepository: LoginRepository = LoginRepository(application)
     var email = ""
     var password = ""
 
-
-    fun createJsonRegister(){
-        val user = JSONObject()
-        try {
-            user.put("email", email)
-            user.put("password", password)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
+    fun postUser(){
+        loginRepository.postUser(email, password)
     }
 }
