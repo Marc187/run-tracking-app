@@ -1,8 +1,8 @@
 const express = require('express');
 const request = require('../database/likes.js');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 
+// Route to get the number of likes for a course
 router.get('/:id_course/:id_utilisateur', async (req, res) => {
     try {
         const id_course = req.params.id_course
@@ -22,6 +22,7 @@ router.get('/:id_course/:id_utilisateur', async (req, res) => {
     }
 })
 
+// Route to add a like to a course
 router.post('/:id_course/:id_utilisateur', async (req, res) => {
     try {
         const id_course = req.params.id_course
@@ -30,17 +31,13 @@ router.post('/:id_course/:id_utilisateur', async (req, res) => {
         console.log(id_course, id_utilisateur)
         const data = await request.addLike(id_course, id_utilisateur)
         
-        console.log(data)
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course ou utilisateur avec cet id trouvée' });
-        }
-        
         res.status(200).json({ message: "success" })
     } catch (error) {
         res.status(500).json(error.message);
     }
 })
 
+// Route to delete a like from a course
 router.delete('/:id_course/:id_utilisateur', async (req, res) => {
     try {
         const id_course = req.params.id_course
@@ -48,11 +45,6 @@ router.delete('/:id_course/:id_utilisateur', async (req, res) => {
 
         console.log(id_course, id_utilisateur)
         const data = await request.deleteLike(id_course, id_utilisateur)
-        
-        console.log(data)
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course ou utilisateur avec cet id trouvée' });
-        }
         
         res.status(200).json({ message: "success" })
     } catch (error) {
