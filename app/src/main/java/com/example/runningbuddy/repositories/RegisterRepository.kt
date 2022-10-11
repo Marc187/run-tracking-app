@@ -20,6 +20,7 @@ class RegisterRepository(private val application: Application) {
             {
                 // if successful switch to the login activity so the user can connect
                 val i = Intent(application, LoginActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 application.startActivity(i)
             },
             {

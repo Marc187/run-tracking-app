@@ -48,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
         btnRegister.setOnClickListener{
-          checkInput()
+            checkInput()    
         }
 
     }
@@ -58,23 +58,22 @@ class RegisterActivity : AppCompatActivity() {
         this.startActivity(i)
     }
 
-    private fun checkInput() {
-
+    fun checkInput() {
         val email = this.findViewById<EditText>(R.id.emailRegister)
         val password = this.findViewById<EditText>(R.id.passwordRegister)
         val name = this.findViewById<EditText>(R.id.prenomNomRegister)
         val username = this.findViewById<EditText>(R.id.usernameRegister)
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email.text.toString().trim()).matches()) {
-            email.error = "Format du Email invalide"
-        } else if (password.text.toString().trim().length < 6) {
-            email.error = "Votre mot de passe doit contenir au moins 6 charactères"
-        } else if (TextUtils.isEmpty(password.text.toString().trim())) {
-            password.error = "Veuillez entrer un mot de passe"
+        if (TextUtils.isEmpty(username.text.toString().trim())) {
+            username.error = "Veuillez entrer un nom d'utilisateur"
         } else if (TextUtils.isEmpty(name.text.toString().trim())) {
             name.error = "Veuillez entrer votre nom"
-        } else if (TextUtils.isEmpty(username.text.toString().trim())) {
-            username.error = "Veuillez entrer un nom d'utilisateur"
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.text.toString().trim()).matches()) {
+            email.error = "Format du Email invalide"
+        } else if (password.text.toString().trim().length < 6) {
+            password.error = "Votre mot de passe doit contenir au moins 6 charactères"
+        } else if (TextUtils.isEmpty(password.text.toString().trim())) {
+            password.error = "Veuillez entrer un mot de passe"
         } else {
             registerViewModel.createUser()
         }
