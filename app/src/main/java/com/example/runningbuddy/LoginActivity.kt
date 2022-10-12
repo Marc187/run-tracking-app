@@ -34,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         tvRegisterFromLogin.setOnClickListener{switchToRegister()}
         val btnConnexion = findViewById<Button>(R.id.btnConnexion)
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        val geterrorOutput: TextView = this.findViewById(R.id.error_output)
 
         findViewById<EditText>(R.id.emailLogin).setText(loginViewModel.email)
         findViewById<EditText>(R.id.emailLogin).addTextChangedListener {
@@ -45,7 +46,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnConnexion.setOnClickListener{
-            loginViewModel.postUser()
+            val emailLogin = findViewById<EditText>(R.id.emailLogin)
+            val passwordLogin = findViewById<EditText>(R.id.passwordLogin)
+            if((emailLogin.text.toString() == "") || passwordLogin.text.toString() == ""){
+                geterrorOutput.text = "REMPLISSEZ TOUS LES CHAMPS"
+            }
+            else{
+                loginViewModel.postUser()
+            }
         }
 
 

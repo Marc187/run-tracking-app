@@ -7,12 +7,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="607dp"
-        android:layout_height="402dp"
+        android:layout_width="439dp"
+        android:layout_height="352dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/imagelogin"
-        tools:layout_editor_absoluteY="-43dp" />
+        tools:layout_editor_absoluteY="-69dp" />
 
     <TextView
         android:id="@+id/textView"
@@ -30,14 +30,13 @@
         android:id="@+id/emailLogin"
         android:layout_width="325dp"
         android:layout_height="55dp"
-        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="Courriel"
         android:inputType="textEmailAddress"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/error_output" />
 
     <EditText
         android:id="@+id/passwordLogin"
@@ -88,5 +87,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/error_output"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="#FF0000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
