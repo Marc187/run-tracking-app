@@ -1,4 +1,4 @@
-package com.example.runningbuddy.ui.dashboard
+package com.example.runningbuddy.ui.enregistrercourse
 
 import android.os.Bundle
 import android.view.LayoutInflater

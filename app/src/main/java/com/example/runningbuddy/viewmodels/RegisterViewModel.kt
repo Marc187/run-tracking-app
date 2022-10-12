@@ -18,8 +18,10 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
     var email = ""
     var password = ""
 
-    val registerRepository = RegisterRepository(getApplication())
+    // Get the Repo for register so we get its functions
+    private val registerRepository = RegisterRepository(getApplication())
 
+    // Create the jsonObj user then use the post function of the Repo
     fun createUser(){
         val user = JSONObject()
         try {

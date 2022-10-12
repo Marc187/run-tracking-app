@@ -1,4 +1,4 @@
-package com.example.runningbuddy.ui.dashboard
+package com.example.runningbuddy.ui.enregistrercourse
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
