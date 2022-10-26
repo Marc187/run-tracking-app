@@ -21,5 +21,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
+        requireActivity().actionBar?.title = "Profil"
     }
 }
