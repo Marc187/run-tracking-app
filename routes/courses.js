@@ -1,15 +1,16 @@
+const knexModule = require('knex');
 const express = require('express');
 const request = require('../database/courses.js');
 const router = express.Router();
+const auth = require('../middleware/authentification')
 
-router.get('/:id_utilisateur', async (req, res) => {
+router.get('/:id_utilisateur', auth, async (req, res) => {
     try {
         const id_utilisateur = req.params.id_utilisateur
         const data = await request.getCourses(id_utilisateur)
 
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucune course enregistrée à cet utilistateur' });
-        }
+        // Authentification de l'Utilisateur
+        if (req.user.id != id_utilisateur) return res.status(401).json({ message: "Unauthorized."})
 
         res.status(200).json(data)
     } catch (error) {
