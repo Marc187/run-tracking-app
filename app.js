@@ -16,6 +16,7 @@ const login = require('./routes/login');
 const register = require('./routes/register');
 const like = require('./routes/like');
 const abonnements = require('./routes/abonnements');
+const activity = require('./routes/activity')
 
 // Middlewares nécessaires à l'application
 app.use(cors());
@@ -29,6 +30,7 @@ app.use('/login', login);
 app.use('/register', register);
 app.use('/subscribtions', abonnements);
 app.use('/subscribe', abonnements);
+app.use('/activity', activity)
 
 // Route pour la documentation
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))

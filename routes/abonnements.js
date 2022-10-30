@@ -13,7 +13,6 @@ router.get('/:id_utilisateur', auth, async (req, res) => {
 
         const data = await request.getSubscriptions(id_utilisateur)
         
-        console.log(data)
         if (data.length === 0) {
             return res.status(404).json({ message: 'Aucun utilisateur avec cet id trouvée' });
         }
