@@ -29,7 +29,7 @@ router.post('/:id_utilisateur_suivi/:id_utilisateur_suivant', auth, async (req, 
         // Authentification de l'Utilisateur
         if (req.user.id != id_utilisateur_suivant) return res.status(401).json({ message: "Unauthorized."})
 
-        const data = await request.addSubscribe(id_utilisateur_suivi, id_utilisateur)
+        const data = await request.addSubscribe(id_utilisateur_suivi, id_utilisateur_suivant)
         
         if (data.length === 0) {
             return res.status(404).json({ message: 'Aucun utilisateur avec cet id trouvée' });
