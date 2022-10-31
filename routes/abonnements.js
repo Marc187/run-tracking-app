@@ -31,10 +31,6 @@ router.post('/:id_utilisateur_suivi/:id_utilisateur_suivant', auth, async (req, 
 
         const data = await request.addSubscribe(id_utilisateur_suivi, id_utilisateur_suivant)
         
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Aucun utilisateur avec cet id trouvée' });
-        }
-        
         res.status(200).json({ message: "success" })
     } catch (error) {
         res.status(500).json(error.message);
