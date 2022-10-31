@@ -2,15 +2,12 @@ const express = require('express');
 const request = require('../database/abonnements.js');
 const router = express.Router();
 const auth = require('../middleware/authentification')
+const userVerification = require('../middleware/user_verification')
 
 // Route to get the number of subscriptions for a user
-router.get('/:id_utilisateur', auth, async (req, res) => {
+router.get('/:id_utilisateur', auth, userVerification, async (req, res) => {
     try {
         const id_utilisateur = req.params.id_utilisateur
-        
-        // Authentification de l'Utilisateur
-        if (req.user.id != id_utilisateur) return res.status(401).json({ message: "Unauthorized."})
-
         const data = await request.getSubscriptions(id_utilisateur)
         
         if (data.length === 0) {

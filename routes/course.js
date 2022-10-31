@@ -3,8 +3,9 @@ const request = require('../database/course.js');
 const requestUser = require('../database/utilisateurs.js');
 const router = express.Router();
 const auth = require('../middleware/authentification')
+const userVerification = require('../middleware/user_verification')
 
-router.get('/:id_course', async (req, res) => {
+router.get('/:id_course', auth, async (req, res) => {
     try {
         const id_course = req.params.id_course
         const data = await request.getCourse(id_course)
@@ -23,15 +24,13 @@ router.get('/:id_course', async (req, res) => {
     }
 })
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, userVerification, async (req, res) => {
     try {
         const id_utilisateur = req.body.id_utilisateur
         const distance = req.body.distance || null
         const duree = req.body.duree || null
         const date = new Date().toISOString()
 
-        // Authentification de l'Utilisateur
-        if (req.user.id != id_utilisateur) return res.status(401).json({ message: "Unauthorized."})
         
         // Verifie si l'Utilisateur est bien dans la base de donnees
         const user = await requestUser.getUserById(id_utilisateur)
