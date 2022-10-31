@@ -8,6 +8,12 @@ function getSubscriptions(id_utilisateur) {
         .where('id_utilisateur_suivant', id_utilisateur)
 }
 
+function getSubscription(id_utilisateur_suivi, id_utilisateur_suivant) {
+    return knex('abonnements')
+        .where('id_utilisateur_suivi', id_utilisateur_suivi)
+        .andWhere('id_utilisateur_suivant', id_utilisateur_suivant)
+}
+
 // Function to add a subscription to a user
 function addSubscribe(id_utilisateur_suivi, id_utilisateur_suivant) {
     return knex('abonnements')
@@ -26,6 +32,7 @@ function deleteSubscribe(id_utilisateur_suivi, id_utilisateur_suivant) {
 
 module.exports = {
     getSubscriptions,
+    getSubscription,
     addSubscribe,
     deleteSubscribe
 };
