@@ -6,9 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.R
+import com.example.runningbuddy.adapters.HomeRecyclerViewAdapter
 
 class HomeFragment : Fragment() {
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var rvCourses: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,7 +26,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        // Viewmodel
+        val id = MainActivity.userId
+        val homeViewModelFactory = HomeViewModelFactory(requireActivity().application, id)
+        this.homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
+
+        // RecyclerView des courses
+        this.rvCourses = requireView().findViewById(R.id.rvCoursesHome)
+        this.rvCourses.layoutManager = LinearLayoutManager(context)
+
+        this.homeViewModel.courses.observe(viewLifecycleOwner) {
+            println(it)
+            this.rvCourses.adapter = HomeRecyclerViewAdapter(it)
+        }
     }
 }

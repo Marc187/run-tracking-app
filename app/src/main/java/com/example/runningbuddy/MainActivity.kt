@@ -12,6 +12,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         var TOKEN = ""
+        var SRVURL = "https://projet3-running-buddy.herokuapp.com"
+        var userId: Int = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
