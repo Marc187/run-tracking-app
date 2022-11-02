@@ -12,7 +12,8 @@ router.get('/:id_utilisateur', auth, userVerification, async (req, res) => {
         const id_utilisateur = req.params.id_utilisateur
         const data_abonnements = await request.getSubscriptions(id_utilisateur)
         const liste_abonnements = data_abonnements.map(x => x.id_utilisateur_suivi)
-
+        liste_abonnements.append(id_utilisateur)
+        
         // Prends toutes les courses des utilisateurs triées par ordre chronologiques
         const activity = await activityRequest.getActivity(liste_abonnements)
 
