@@ -11,6 +11,7 @@ function createUser(nom_utilisateur, nom, email, password) {
 function findUserByEmail (email) {
     return knex('utilisateurs')
         .where('email', email)
+        .first()
 }
 
 
