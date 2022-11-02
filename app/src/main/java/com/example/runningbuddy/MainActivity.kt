@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_profile
             )
         )
-        this.setupActionBarWithNavController(navController, appBarConfiguration)
+        //this.setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView: BottomNavigationView = this.findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)
