@@ -10,14 +10,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.example.runningbuddy.MainActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.runningbuddy.MainActivity.Companion.ACTION_START_OR_RESUME_SERVICE
 import com.example.runningbuddy.MainActivity.Companion.ACTION_PAUSE_SERVICE
-import com.example.runningbuddy.MainActivity.Companion.ACTION_STOP_SERVICE
+import com.example.runningbuddy.MainActivity.Companion.ACTION_START_OR_RESUME_SERVICE
+import com.example.runningbuddy.MainActivity.Companion.MAP_ZOOM
+import com.example.runningbuddy.MainActivity.Companion.POLYLINE_COLOR
+import com.example.runningbuddy.MainActivity.Companion.POLYLINE_WIDTH
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
+import com.example.runningbuddy.services.Polyline
+import com.example.runningbuddy.services.TrackingService
+import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -25,8 +35,13 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     private lateinit var enregistrerCourseViewModel: EnregistrerCourseViewModel
     private lateinit var mapView: MapView
 
+    private var isTracking = false
+    private var pathPoints = mutableListOf<Polyline>()
+
     //Create an object google and then we see this object with mapview
     private var map: GoogleMap? = null
+
+    private var curTimeMillis = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,19 +58,94 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             ViewModelProvider(this).get(EnregistrerCourseViewModel::class.java)
 
         mapView = requireView().findViewById(R.id.mapView)
-        //requireView().findViewById<Button>(R.id.btnStartRun).setOnClickListener {
-        //    sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
-        //}
+        btnStartRun.setOnClickListener {
+            toggleRun()
+        }
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
             map = it
+            addAllPolylines()
+        }
+
+        subscribeToObservers()
+    }
+
+    private fun updateTracking(isTracking: Boolean) {
+        this.isTracking = isTracking
+        if(!isTracking) {
+            btnStartRun.text = "Start"
+            btnFinishRun.visibility = View.VISIBLE
+        } else {
+            btnStartRun.text = "Stop"
+            btnFinishRun.visibility = View.GONE
+        }
+    }
+
+    private fun subscribeToObservers() {
+        TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
+            updateTracking(it)
+        })
+
+        TrackingService.pathPoints.observe(viewLifecycleOwner, Observer  {
+            pathPoints = it
+            addAllPolylines()
+            moveCameraToUser()
+        })
+
+        TrackingService.timeRunInMillis.observe(viewLifecycleOwner, Observer {
+            curTimeMillis = it
+            val formattedTime = TrackingUtility.getFormattedStopWatchTime(curTimeMillis, true)
+            tvtimer.text = formattedTime
+        })
+    }
+
+    private fun toggleRun() {
+        if(isTracking) {
+            sendCommandToService(ACTION_PAUSE_SERVICE)
+        } else {
+            sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+        }
+    }
+
+    private fun moveCameraToUser() {
+        if(pathPoints.isNotEmpty() && pathPoints.last().isNotEmpty()) {
+            map?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    pathPoints.last().last(),
+                    MAP_ZOOM
+                )
+            )
+        }
+    }
+
+    // Add all polyline when the device is rotated
+    private fun addAllPolylines() {
+        for(polyline in pathPoints) {
+            val polylineOptions = PolylineOptions()
+                .color(POLYLINE_COLOR)
+                .width(POLYLINE_WIDTH)
+                .addAll(polyline)
+            map?.addPolyline(polylineOptions)
+        }
+    }
+
+    private fun addLatestPolyline() {
+        if(pathPoints.isEmpty() && pathPoints.last().size > 1) {
+            val preLastLatLng = pathPoints.last()[pathPoints.last().size - 2]
+            val lastLatLng = pathPoints.last().last()
+            val polylineOptions = PolylineOptions()
+                .color(POLYLINE_COLOR)
+                .width(POLYLINE_WIDTH)
+                .add(preLastLatLng)
+                .add(lastLatLng)
+            map?.addPolyline(polylineOptions)
         }
     }
 
     private fun sendCommandToService(action: String) =
         //it == intent
-        Intent(requireContext(), TrackingUtility::class.java).also {
+        Intent(requireContext(), TrackingService::class.java).also {
             it.action = action
             requireContext().startService(it)
         }

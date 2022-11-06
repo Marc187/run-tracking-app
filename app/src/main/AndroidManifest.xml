@@ -38,6 +38,6 @@ package="com.example.runningbuddy">
             android:foregroundServiceType="location" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="AIzaSyCpWj0nhT2Qy7Szcd_Qv-psvd8stIEv6jk" />
     </application>
 </manifest>
