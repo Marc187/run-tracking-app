@@ -13,4 +13,7 @@ import com.example.runningbuddy.models.Run
 
 
 class RunRepository (private val application: Application) {
+    fun insertRun(run: Run) {
+        //TODO
+    }
 }

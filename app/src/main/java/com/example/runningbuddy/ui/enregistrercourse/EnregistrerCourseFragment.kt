@@ -18,17 +18,22 @@ import com.example.runningbuddy.Constants.MAP_ZOOM
 import com.example.runningbuddy.Constants.POLYLINE_COLOR
 import com.example.runningbuddy.Constants.POLYLINE_WIDTH
 import com.example.runningbuddy.Constants.REQUEST_CODE_LOCATION_PERMISSION
+import com.example.runningbuddy.MainActivity.Companion.userId
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
+import com.example.runningbuddy.models.Run
 import com.example.runningbuddy.services.Polyline
 import com.example.runningbuddy.services.TrackingService
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
+import java.util.*
+import kotlin.math.round
 
 class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var enregistrerCourseViewModel: EnregistrerCourseViewModel
@@ -62,7 +67,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
 
         btnFinishRun.setOnClickListener {
-            stopRun()
+            zoomToSeeWholeTrack()
+            endRunAndSaveToDb()
         }
 
         mapView.onCreate(savedInstanceState)
@@ -111,6 +117,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         })
     }
 
+
+
     // function pour vérifier si isTracking est égal à true si oui pause le service
     // sinon commence le
     private fun toggleRun() {
@@ -121,9 +129,13 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+
+
     private fun stopRun() {
         sendCommandToService(ACTION_STOP_SERVICE)
     }
+
+
 
     // si 'utilisateur est situer sur la map bouger la camera sur lui (on sait qu'il est sur la map
     // si les pathpoints sont pas vide)
@@ -135,6 +147,42 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
                     MAP_ZOOM
                 )
             )
+        }
+    }
+
+
+
+    private fun zoomToSeeWholeTrack() {
+        val bounds = LatLngBounds.Builder()
+        for(polyline in pathPoints) {
+            for(pos in polyline) {
+                bounds.include(pos)
+            }
+        }
+
+        map?.moveCamera(
+            CameraUpdateFactory.newLatLngBounds(
+                bounds.build(),
+                mapView.width,
+                mapView.height,
+                (mapView.height * 0.05f).toInt()
+            )
+        )
+    }
+
+
+    private fun endRunAndSaveToDb() {
+        map?.snapshot { bmp ->
+            var distanceInMeters = 0
+            for (polyline in pathPoints) {
+                distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
+            }
+            val avgSpeed = round((distanceInMeters / 1000f) / (curTimeMillis / 1000f / 60 / 60) *10) / 10f
+            val dateTimeStamp = Calendar.getInstance().timeInMillis
+            val caloriesBurned = ((distanceInMeters / 1000f) * 80f).toInt()
+            val run = Run(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
+            enregistrerCourseViewModel.insertRun(run)
+            stopRun()
         }
     }
 
