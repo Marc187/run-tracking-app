@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningbuddy.Constants.ACTION_PAUSE_SERVICE
 import com.example.runningbuddy.Constants.ACTION_START_OR_RESUME_SERVICE
+import com.example.runningbuddy.Constants.ACTION_STOP_SERVICE
 import com.example.runningbuddy.Constants.MAP_ZOOM
 import com.example.runningbuddy.Constants.POLYLINE_COLOR
 import com.example.runningbuddy.Constants.POLYLINE_WIDTH
@@ -60,10 +61,15 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             toggleRun()
         }
 
+        btnFinishRun.setOnClickListener {
+            stopRun()
+        }
+
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
             map = it
             addAllPolylines()
+            moveCameraToUser()
         }
 
         subscribeToObservers()
@@ -113,6 +119,10 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         } else {
             sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
         }
+    }
+
+    private fun stopRun() {
+        sendCommandToService(ACTION_STOP_SERVICE)
     }
 
     // si 'utilisateur est situer sur la map bouger la camera sur lui (on sait qu'il est sur la map

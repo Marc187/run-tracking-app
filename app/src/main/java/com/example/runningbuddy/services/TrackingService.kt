@@ -34,11 +34,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-/* MutableList<LatLng> est égal au coordonée de l'utilisateur
-        exemple 1.0/1.0 suivi de 1.1/1.0 etc...
+/* MutableList<LatLng> est une liste de LatLng ex: mutableListof((45.31, 46,12), (67.51, 155.515))
+
    Puisque l'utilisateur peut arrêtre le suivi avec un bouton pause on doit mettre
         c'est info la dans une MutableList pcq il peut y avoir plus
-        d'une liste de coordonne du aux pause
+        d'une liste de coordonne du aux pause ex :
+        mutableListof(
+            mutableListof((45.31, 46,12), (67.51, 155.515)),
+            mutableListof((45.31, 46,12), (67.51, 155.515))
+        )
+
    Finalement on engloble tout ca dans un livedata pour pouvoir l'observer plus facilement
  */
 typealias Polyline = MutableList<LatLng>
@@ -47,9 +52,10 @@ typealias Polylines = MutableList<Polyline>
 class TrackingService : LifecycleService() {
 
     var isFirstRun = true
+    var serviceKilled = false
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val timeRunInSeconds = MutableLiveData<Long>()
-
+    lateinit var notificationBuilder: NotificationCompat.Builder
 
     companion object {
         val timeRunInMillis = MutableLiveData<Long>()
@@ -77,6 +83,16 @@ class TrackingService : LifecycleService() {
         })
     }
 
+    // TODO : Remove deprecated
+    private fun killService() {
+        serviceKilled = true
+        isFirstRun = true
+        pauseService()
+        postInitialValues()
+        stopForeground(true)
+        stopSelf()
+    }
+
     // Recois les commande de Enregistrer course Fragment et démarre des fonctions en fonction
     // des commandes recu
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -95,7 +111,7 @@ class TrackingService : LifecycleService() {
                     pauseService()
                 }
                 ACTION_STOP_SERVICE -> {
-                    println("Stopped service")
+                    killService()
                 }
             }
         }
@@ -189,6 +205,7 @@ class TrackingService : LifecycleService() {
         pathPoints.postValue(this)
     } ?: pathPoints.postValue(mutableListOf(mutableListOf()))
 
+
     private fun startForegroundService() {
         startTimer()
         isTracking.postValue(true)
@@ -200,7 +217,8 @@ class TrackingService : LifecycleService() {
             createNotificationChannel(notificationManager)
         }
 
-        val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+        // TODO: Move cest fonction la ailleurs pour factoriser (pt pas en faite haha)
+        notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(false)
             .setOngoing(true)
             .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
@@ -208,6 +226,15 @@ class TrackingService : LifecycleService() {
             .setContentText("00:00:00")
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
+
+        // Permet d'update le temps dans la notif
+        timeRunInSeconds.observe(this, Observer {
+            if(!serviceKilled) {
+                val notification = notificationBuilder
+                    .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
+                notificationManager.notify(NOTIFICATION_ID, notification.build())
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
