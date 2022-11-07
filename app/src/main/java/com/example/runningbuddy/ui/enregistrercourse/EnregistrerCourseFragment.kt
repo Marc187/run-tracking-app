@@ -11,11 +11,12 @@ import com.example.runningbuddy.MainActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.runningbuddy.MainActivity.Companion.ACTION_PAUSE_SERVICE
-import com.example.runningbuddy.MainActivity.Companion.ACTION_START_OR_RESUME_SERVICE
-import com.example.runningbuddy.MainActivity.Companion.MAP_ZOOM
-import com.example.runningbuddy.MainActivity.Companion.POLYLINE_COLOR
-import com.example.runningbuddy.MainActivity.Companion.POLYLINE_WIDTH
+import com.example.runningbuddy.Constants.ACTION_PAUSE_SERVICE
+import com.example.runningbuddy.Constants.ACTION_START_OR_RESUME_SERVICE
+import com.example.runningbuddy.Constants.MAP_ZOOM
+import com.example.runningbuddy.Constants.POLYLINE_COLOR
+import com.example.runningbuddy.Constants.POLYLINE_WIDTH
+import com.example.runningbuddy.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
 import com.example.runningbuddy.services.Polyline
@@ -200,7 +201,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             EasyPermissions.requestPermissions(
                 this,
                 "You need to accept the location permission to use the app",
-                MainActivity.REQUEST_CODE_LOCATION_PERMISSION,
+                REQUEST_CODE_LOCATION_PERMISSION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
@@ -208,7 +209,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             EasyPermissions.requestPermissions(
                 this,
                 "You need to accept the location permission to use the app",
-                MainActivity.REQUEST_CODE_LOCATION_PERMISSION,
+                REQUEST_CODE_LOCATION_PERMISSION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
