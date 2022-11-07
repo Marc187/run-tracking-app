@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 object TrackingUtility {
     fun hasLocationPermissions(context: Context) =
-        // Pas besoin de backgroud location si version est egal a Q
+        // Pas besoin de backgroud location permission si version est egal a Q
         // Check si le user a les permissions mentionner
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             EasyPermissions.hasPermissions(
@@ -25,6 +25,9 @@ object TrackingUtility {
             )
         }
 
+
+    // prend une variable long de type miliseconde puis le transform en string 00:00:00 avec ou
+    // sans les milis selon la variable includeMillis
     fun getFormattedStopWatchTime(ms: Long, includeMillis: Boolean = false): String {
         var milliSeconds = ms
         val hours = TimeUnit.MICROSECONDS.toHours(milliSeconds)

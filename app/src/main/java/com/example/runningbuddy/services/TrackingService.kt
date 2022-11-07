@@ -47,10 +47,9 @@ typealias Polylines = MutableList<Polyline>
 class TrackingService : LifecycleService() {
 
     var isFirstRun = true
-
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
     private val timeRunInSeconds = MutableLiveData<Long>()
+
 
     companion object {
         val timeRunInMillis = MutableLiveData<Long>()
@@ -58,6 +57,9 @@ class TrackingService : LifecycleService() {
         val pathPoints = MutableLiveData<Polylines>()
     }
 
+    // fonction permettant de changer isFirstRun a false pcq on en a commencer une
+    // de rajoute une valeur vide a pathpoints pour qu'il ne soit pas null
+    // et de mettre les valeurs de temps à 0L
     private fun postInitialValues() {
         isTracking.postValue(false)
         pathPoints.postValue(mutableListOf())
@@ -75,6 +77,8 @@ class TrackingService : LifecycleService() {
         })
     }
 
+    // Recois les commande de Enregistrer course Fragment et démarre des fonctions en fonction
+    // des commandes recu
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
             when (it.action) {
@@ -104,6 +108,7 @@ class TrackingService : LifecycleService() {
     private var timeStarted = 0L
     private var lastSecondTimeStamp = 0L
 
+    // start le timer au debut de la course d'où poruqoi on initialse les variable
     private fun startTimer() {
         addEmptyPolyline()
         isTracking.postValue(true)
@@ -130,6 +135,7 @@ class TrackingService : LifecycleService() {
         isTimerEnabled = false
     }
 
+    // TODO: Changer les trucs deprecated
     @SuppressLint("MissingPermission")
     private fun updateLocationTracking(isTracking: Boolean) {
         if(isTracking) {

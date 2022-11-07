@@ -68,6 +68,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         subscribeToObservers()
     }
 
+    // function to check if tracking then update le button pour start ou stop
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if(!isTracking) {
@@ -79,17 +80,23 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+
     private fun subscribeToObservers() {
+        // function permettant de d'observer
+        // le state de isTracking et d'update le tracking en fonction
         TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
             updateTracking(it)
         })
 
+        // observe aussi les pathpoints pour les rajouter et
+        // bouger la camera en fonction de la postion
         TrackingService.pathPoints.observe(viewLifecycleOwner, Observer  {
             pathPoints = it
             addAllPolylines()
             moveCameraToUser()
         })
 
+        // observe le temps pour pouvoir la formet en fonction de si l'utilisateur cours
         TrackingService.timeRunInMillis.observe(viewLifecycleOwner, Observer {
             curTimeMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(curTimeMillis, true)
@@ -97,6 +104,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         })
     }
 
+    // function pour vérifier si isTracking est égal à true si oui pause le service
+    // sinon commence le
     private fun toggleRun() {
         if(isTracking) {
             sendCommandToService(ACTION_PAUSE_SERVICE)
@@ -105,6 +114,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+    // si 'utilisateur est situer sur la map bouger la camera sur lui (on sait qu'il est sur la map
+    // si les pathpoints sont pas vide)
     private fun moveCameraToUser() {
         if(pathPoints.isNotEmpty() && pathPoints.last().isNotEmpty()) {
             map?.animateCamera(
@@ -127,6 +138,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+    // rajoute le dernier polyline
     private fun addLatestPolyline() {
         if(pathPoints.isEmpty() && pathPoints.last().size > 1) {
             val preLastLatLng = pathPoints.last()[pathPoints.last().size - 2]
@@ -140,6 +152,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+    // petite fonction permettant d'envoyer une action au service
     private fun sendCommandToService(action: String) =
         //it == intent
         Intent(requireContext(), TrackingService::class.java).also {
@@ -177,6 +190,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         mapView.onSaveInstanceState(outState)
     }
 
+    // demande les permisson en fonction de la réponse de la fonction hasLocationPermissions
+    // de TrackingUtility
     private fun requestPermissions() {
         if(TrackingUtility.hasLocationPermissions(requireContext())) {
             return
@@ -202,6 +217,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     }
 
 
+    // override la fonction permissionGranted puisqu'on utilise EasyPErmission et pas les permission
+    // de base
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         // if il a denied pour tjr le forcer a accepter haha
         if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
@@ -213,6 +230,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {}
 
+
+    // TODO : modifer les trucs deprecated
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

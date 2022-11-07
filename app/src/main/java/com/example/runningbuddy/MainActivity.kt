@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    // TODO : Prednre ces valeurs la et les mettre dans une class objects constant
     companion object {
         var TOKEN = ""
         var SRVURL = "https://projet3-running-buddy.herokuapp.com"
