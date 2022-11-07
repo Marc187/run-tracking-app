@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.example.runningbuddy.MainActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,11 +20,9 @@ import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
 import com.example.runningbuddy.services.Polyline
 import com.example.runningbuddy.services.TrackingService
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
 import pub.devrel.easypermissions.AppSettingsDialog
