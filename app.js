@@ -12,6 +12,7 @@ const swaggerDocument = YAML.load('./documentation_api.yaml')
 // Importation des fichiers de routes
 const course = require('./routes/course.js');
 const courses = require('./routes/courses.js');
+const statsCourses = require('./routes/statsCourses.js');
 const login = require('./routes/login');
 const register = require('./routes/register');
 const like = require('./routes/like');
@@ -25,6 +26,7 @@ app.use(express.json());
 // Routes
 app.use('/course', course);
 app.use('/courses', courses);
+app.use('/statsCourses', statsCourses);
 app.use('/like', like);
 app.use('/login', login);
 app.use('/register', register);
