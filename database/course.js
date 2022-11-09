@@ -8,10 +8,10 @@ function getCourse(id) {
         .where('id', id)
 }
 
-function addCourse(date, distance, duree, id_utilisateur) {
+function addCourse(id_utilisateur, img, timestamp, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned) {
     return knex('courses')
         .returning('id')
-        .insert({ date, distance, duree, id_utilisateur })
+        .insert({ id_utilisateur, img, timestamp, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned })
         
 }
 

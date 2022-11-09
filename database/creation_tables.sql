@@ -34,9 +34,17 @@ CREATE TABLE courses (
 	id_utilisateur INT 
 		FOREIGN KEY REFERENCES utilisateurs(id),
 		-- ON DELETE CASCADE,
+	img BIGINT,
+    timestamp BIGINT,
+    avgSpeedInKMH Float,
+    distanceInMeters Int,
+    timeInMillis BIGINT,
+    caloriesBurned Int
+	/*
 	distance FLOAT,
 	duree VARCHAR(255),
 	date DATE
+	*/
 )
 GO
 
@@ -73,6 +81,7 @@ INSERT INTO abonnements VALUES
 GO
 
 INSERT INTO courses VALUES
+	/*
 	(1, 5.54, '00:25:43', '2022-01-24'),
 	(1, 4.32, '00:15:43', '2022-02-25'),
 	(2, 5.54, '00:25:43', '2022-03-15'),
@@ -85,6 +94,7 @@ INSERT INTO courses VALUES
 	(4, 5.54, '00:25:43', '2022-06-25'),
 	(4, 3.54, '00:25:43', '2022-05-15'),
 	(4, 2.01, '00:25:43', '2022-05-05')
+	*/
 GO
 
 INSERT INTO likes VALUES 
