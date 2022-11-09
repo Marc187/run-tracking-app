@@ -21,7 +21,10 @@
         <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/layout_indicators.xml" value="0.14447463768115942" />
         <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/login.xml" value="0.14447463768115942" />
         <entry key="..\:/Users/Eric/Desktop/Projet3/frontend_android/app/src/main/res/layout/register.xml" value="0.18857142857142858" />
+        <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/drawable/ic_baseline_thumb_up_24.xml" value="0.354" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/drawable/liked_btn.xml" value="0.2065" />
+        <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/drawable/not_liked_btn.xml" value="0.354" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/drawable/rounded_corner.xml" value="0.2905" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
@@ -32,7 +35,7 @@
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/fragment_home.xml" value="0.28865979381443296" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/fragment_notifications.xml" value="0.29030797101449274" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/fragment_profile.xml" value="0.20625" />
-        <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/home_course_item.xml" value="0.264" />
+        <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/home_course_item.xml" value="0.5" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/login.xml" value="0.2" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/ma.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Marc/Desktop/Projet 3/frontend_android/app/src/main/res/layout/register.xml" value="0.20153985507246377" />

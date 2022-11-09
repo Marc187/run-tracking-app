@@ -21,7 +21,6 @@ class UserActivityRepository (private val application: Application) {
             Method.GET,
             "${MainActivity.SRVURL}/activity/$userId",
             {
-                print(it)
                 val data = Gson().fromJson(it, Array<Course>::class.java)
                 courses.value = data.toMutableList()
             },

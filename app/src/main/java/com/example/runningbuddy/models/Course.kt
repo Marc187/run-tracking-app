@@ -7,5 +7,5 @@ data class Course(
     val distance: Float,
     val duree: String,
     val date: String,
-    val liked: Boolean
+    var liked: Boolean
 )

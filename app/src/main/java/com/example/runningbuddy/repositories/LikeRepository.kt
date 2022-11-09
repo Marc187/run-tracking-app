@@ -15,18 +15,40 @@ import org.json.JSONObject
 
 class LikeRepository (private val application: Application) {
 
-    fun addLike(courses: MutableLiveData<MutableList<Course>>, courseId: Int) {
+    fun addLike(courseId: Int) {
         val queue = Volley.newRequestQueue(application)
         val r = object : StringRequest(
             Method.POST,
-            "${MainActivity.SRVURL}/$courseId/${MainActivity.userId}",
-            {
+            "${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}",
+            {println("${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}")
                 print(it)
-                //val data = Gson().fromJson(it, Array<Course>::class.java)
-                courses.value = data.toMutableList()
             },
             {
-                println("ERREUR: /api/activity")
+                println("ERREUR: /api/like")
+            }
+        )
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headerMap = mutableMapOf<String, String>()
+                headerMap["Content-Type"] = "application/json";
+                headerMap["Authorization"] = "Bearer ${MainActivity.TOKEN}";
+                return headerMap
+            }
+        }
+        queue.add(r)
+    }
+
+    fun deleteLike(courseId: Int) {
+        val queue = Volley.newRequestQueue(application)
+        val r = object : StringRequest(
+            Method.DELETE,
+            "${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}",
+            {
+                println("${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}")
+                print(it)
+            },
+            {
+                println("ERREUR: /api/like")
             }
         )
         {
