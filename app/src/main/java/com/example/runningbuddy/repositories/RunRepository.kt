@@ -5,7 +5,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.runningbuddy.converters.Converters
-import com.example.runningbuddy.models.Run
+import com.example.runningbuddy.models.RunPost
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -13,18 +13,18 @@ import org.json.JSONObject
 class RunRepository (private val application: Application) {
     private var converters: Converters = Converters()
 
-    fun insertRun(run: Run) {
+    fun insertRun(runPost: RunPost) {
         val queue = Volley.newRequestQueue(application)
         val runObject = JSONObject()
         try {
-            runObject.put("id_utilisateur", run.id_utilisateur)
+            runObject.put("id_utilisateur", runPost.id_utilisateur)
                                         //convert si run.img est pas null
-            runObject.put("img", run.img?.let { converters.fromBitMap(it) })
-            runObject.put("timestamp", run.timestamp)
-            runObject.put("avgSpeedInKMH", run.avgSpeedInKMH)
-            runObject.put("distanceInMeters", run.distanceInMeters)
-            runObject.put("timeInMillis", run.timeInMillis)
-            runObject.put("caloriesBurned", run.caloriesBurned)
+            runObject.put("img", runPost.img?.let { converters.fromBitMap(it) })
+            runObject.put("timestamp", runPost.timeStamps)
+            runObject.put("avgSpeedInKMH", runPost.avgSpeedInKMH)
+            runObject.put("distanceInMeters", runPost.distanceInMeters)
+            runObject.put("timeInMillis", runPost.timeInMillis)
+            runObject.put("caloriesBurned", runPost.caloriesBurned)
         } catch (e: JSONException) {
             e.printStackTrace()
         }

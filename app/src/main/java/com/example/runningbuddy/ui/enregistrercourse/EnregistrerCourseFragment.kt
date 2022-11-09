@@ -20,7 +20,7 @@ import com.example.runningbuddy.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.example.runningbuddy.MainActivity.Companion.userId
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
-import com.example.runningbuddy.models.Run
+import com.example.runningbuddy.models.RunPost
 import com.example.runningbuddy.services.Polyline
 import com.example.runningbuddy.services.TrackingService
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -179,8 +179,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             val avgSpeed = round((distanceInMeters / 1000f) / (curTimeMillis / 1000f / 60 / 60) *10) / 10f
             val dateTimeStamp = Calendar.getInstance().timeInMillis
             val caloriesBurned = ((distanceInMeters / 1000f) * 80f).toInt()
-            val run = Run(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
-            enregistrerCourseViewModel.insertRun(run)
+            val runPost = RunPost(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
+            enregistrerCourseViewModel.insertRun(runPost)
             stopRun()
         }
     }
