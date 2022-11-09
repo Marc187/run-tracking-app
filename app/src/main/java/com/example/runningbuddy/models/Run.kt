@@ -3,7 +3,6 @@ package com.example.runningbuddy.models
 import android.graphics.Bitmap
 
 data class Run (
-    var id: Int,
     var id_utilisateur: Int,
     var img: Bitmap? = null,
     var timestamp: Long = 0L,
