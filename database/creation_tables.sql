@@ -34,8 +34,8 @@ CREATE TABLE courses (
 	id_utilisateur INT 
 		FOREIGN KEY REFERENCES utilisateurs(id),
 		-- ON DELETE CASCADE,
-	img BIGINT,
-    timestamp BIGINT,
+	img varbinary,
+    timeStamps BIGINT,
     avgSpeedInKMH Float,
     distanceInMeters Int,
     timeInMillis BIGINT,
@@ -66,7 +66,8 @@ INSERT INTO utilisateurs VALUES
 	('marc1234', 'Marc Charlebois', 'eric@gmail.com', 'password123'),
 	('eric1234', 'Eric Larivee', 'eric@gmail.com', 'password123'),
 	('antoine1234', 'Antoine Lauzon', 'antoine@gmail.com', 'password123'),
-	('test1234', 'Hello World', 'test@gmail.com', 'password123')
+	('test1234', 'Hello World', 'test@gmail.com', 'password123'),
+	('e1234567', 'test', 'e1234567@site.com', '$2a$10$MZK.TGjL2tFtH5O9dMG04eEKY439bacpikpj2DedO.H80kFHGOAEK')
 GO
 
 INSERT INTO abonnements VALUES 
@@ -80,8 +81,8 @@ INSERT INTO abonnements VALUES
 	(4, 2)
 GO
 
+/*
 INSERT INTO courses VALUES
-	/*
 	(1, 5.54, '00:25:43', '2022-01-24'),
 	(1, 4.32, '00:15:43', '2022-02-25'),
 	(2, 5.54, '00:25:43', '2022-03-15'),
@@ -94,10 +95,9 @@ INSERT INTO courses VALUES
 	(4, 5.54, '00:25:43', '2022-06-25'),
 	(4, 3.54, '00:25:43', '2022-05-15'),
 	(4, 2.01, '00:25:43', '2022-05-05')
-	*/
 GO
 
-INSERT INTO likes VALUES 
+INSERT INTO likes VALUES
 	(1, 2),
 	(1, 3),
 	(2, 1),
@@ -107,3 +107,4 @@ INSERT INTO likes VALUES
 	(5, 4),
 	(6, 2)
 GO
+*/
