@@ -20,8 +20,10 @@ class LikeRepository (private val application: Application) {
         val r = object : StringRequest(
             Method.POST,
             "${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}",
-            {println("${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}")
-                print(it)
+            {
+                println("${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}")
+                println("Ajout like")
+                println(it)
             },
             {
                 println("ERREUR: /api/like")
@@ -45,7 +47,8 @@ class LikeRepository (private val application: Application) {
             "${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}",
             {
                 println("${MainActivity.SRVURL}/like/$courseId/${MainActivity.userId}")
-                print(it)
+                println("Suppression like")
+                println(it)
             },
             {
                 println("ERREUR: /api/like")

@@ -33,6 +33,7 @@ class HomeViewModel(val app: Application) : AndroidViewModel(app) {
                 likeRepository.addLike(course.id)
                 course.liked = true
             }
+            courses.value?.get(indexCourse)?.let { println(it.liked) }
         }
     }
 }

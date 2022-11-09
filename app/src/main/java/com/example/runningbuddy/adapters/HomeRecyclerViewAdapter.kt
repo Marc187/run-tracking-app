@@ -46,16 +46,19 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<Course>, pri
 
         // Click du bouton pour like un course
         holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setOnClickListener{
-            homeViewModel.updateLike(position)
             if (homeViewModel.courses.value?.get(position)!!.liked) {
-                holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setColorFilter(
-                    ContextCompat.getColor(holder.view.context, R.color.liked),
-                    android.graphics.PorterDuff.Mode.MULTIPLY)
-            } else {
                 holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setColorFilter(
                     ContextCompat.getColor(holder.view.context, R.color.notLiked),
                     android.graphics.PorterDuff.Mode.MULTIPLY)
+            } else {
+                holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setColorFilter(
+                    ContextCompat.getColor(holder.view.context, R.color.liked),
+                    android.graphics.PorterDuff.Mode.MULTIPLY)
             }
+            
+            homeViewModel.updateLike(position)
+
+            println("hello ${homeViewModel.courses.value?.get(position)!!.liked}")
         }
     }
 
