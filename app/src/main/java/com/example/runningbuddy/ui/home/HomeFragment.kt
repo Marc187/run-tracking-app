@@ -29,16 +29,14 @@ class HomeFragment : Fragment() {
 
         // Viewmodel
         val id = MainActivity.userId
-        val homeViewModelFactory = HomeViewModelFactory(requireActivity().application, id)
-        this.homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
+        this.homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         // RecyclerView des courses
         this.rvCourses = requireView().findViewById(R.id.rvCoursesHome)
         this.rvCourses.layoutManager = LinearLayoutManager(context)
 
         this.homeViewModel.courses.observe(viewLifecycleOwner) {
-            println(it)
-            this.rvCourses.adapter = HomeRecyclerViewAdapter(it)
+            this.rvCourses.adapter = HomeRecyclerViewAdapter(it, this.homeViewModel)
         }
     }
 }
