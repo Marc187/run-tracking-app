@@ -8,8 +8,7 @@ import com.example.runningbuddy.repositories.RunRepository
 class EnregistrerCourseViewModel(val app: Application) : AndroidViewModel(app) {
 
     private var runRepository: RunRepository = RunRepository(app)
-
-
+    
     fun insertRun(run: Run) {
         runRepository.insertRun(run)
     }
