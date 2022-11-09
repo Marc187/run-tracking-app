@@ -28,7 +28,7 @@ router.post('/', auth, userVerification, async (req, res) => {
     try {
         const id_utilisateur = req.body.id_utilisateur
         const img = req.body.img
-        const timestamp = req.body.timestamp
+        const timeStamps = req.body.timeStamps
         const avgSpeedInKMH = req.body.avgSpeedInKMH
         const distanceInMeters = req.body.distanceInMeters
         const timeInMillis = req.body.timeInMillis
@@ -41,7 +41,7 @@ router.post('/', auth, userVerification, async (req, res) => {
             return res.status(404).json({ message: "Aucun utilisateur avec cet ID trouvé." })    
         }
 
-        const data = await request.addCourse(id_utilisateur, img, timestamp, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned)
+        const data = await request.addCourse(id_utilisateur, img, timeStamps, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned)
         
         res.status(200).json({ message: "success" })
     } catch (error) {
