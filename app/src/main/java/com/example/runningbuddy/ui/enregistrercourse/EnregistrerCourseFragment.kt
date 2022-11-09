@@ -176,6 +176,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             for (polyline in pathPoints) {
                 distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
             }
+            // TODO: Changer les calcul et modoifer tampstamp pour une vria date
             val avgSpeed = round((distanceInMeters / 1000f) / (curTimeMillis / 1000f / 60 / 60) *10) / 10f
             val dateTimeStamp = Calendar.getInstance().timeInMillis
             val caloriesBurned = ((distanceInMeters / 1000f) * 80f).toInt()

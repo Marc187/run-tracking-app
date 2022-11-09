@@ -4,6 +4,7 @@ import android.app.Application
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.converters.Converters
 import com.example.runningbuddy.models.RunPost
 import org.json.JSONException
@@ -29,15 +30,23 @@ class RunRepository (private val application: Application) {
             e.printStackTrace()
         }
 
-        val r = JsonObjectRequest(
-            Request.Method.POST,
-            "https://projet3-running-buddy.herokuapp.com/ TODO() ", runObject,
+        val r = object : JsonObjectRequest(
+            Method.POST,
+            "https://projet3-running-buddy.herokuapp.com/course", runObject,
             {
                 println(it)
             },
             {
                 println(it.message)
             })
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headerMap = mutableMapOf<String, String>()
+                headerMap["Content-Type"] = "application/json";
+                headerMap["Authorization"] = "Bearer ${MainActivity.TOKEN}";
+                return headerMap
+            }
+        }
         queue.add(r)
     }
 }
