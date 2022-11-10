@@ -3,23 +3,13 @@ package com.example.runningbuddy
 import LoginViewModel
 import android.content.Intent
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.example.runningbuddy.databinding.LoginBinding
-import com.example.runningbuddy.models.User
-import com.example.runningbuddy.repositories.LoginRepository
-import com.example.runningbuddy.viewmodels.RegisterViewModel
-import com.google.gson.Gson
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {

@@ -21,7 +21,7 @@ class RunRepository (private val application: Application) {
             runObject.put("id_utilisateur", runPost.id_utilisateur)
                                         //convert si run.img est pas null
             runObject.put("img", runPost.img?.let { converters.fromBitMap(it) })
-            runObject.put("timestamp", runPost.timeStamps)
+            runObject.put("timeStamps", runPost.timeStamps)
             runObject.put("avgSpeedInKMH", runPost.avgSpeedInKMH)
             runObject.put("distanceInMeters", runPost.distanceInMeters)
             runObject.put("timeInMillis", runPost.timeInMillis)

@@ -105,7 +105,6 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         TrackingService.pathPoints.observe(viewLifecycleOwner, Observer  {
             pathPoints = it
             addAllPolylines()
-            moveCameraToUser()
         })
 
         // observe le temps pour pouvoir la formet en fonction de si l'utilisateur cours
@@ -178,10 +177,14 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             }
             // TODO: Changer les calcul et modoifer tampstamp pour une vria date
             val avgSpeed = round((distanceInMeters / 1000f) / (curTimeMillis / 1000f / 60 / 60) *10) / 10f
-            val dateTimeStamp = Calendar.getInstance().timeInMillis
+            val calendar = Calendar.getInstance()
+            val dateTimeStamp =              //Plus 1 pcq les mois commence a 0
+                "${calendar[Calendar.YEAR]}-${calendar[Calendar.MONTH] + 1}-${calendar[Calendar.DATE]}"
+            println(dateTimeStamp)
             val caloriesBurned = ((distanceInMeters / 1000f) * 80f).toInt()
             val runPost = RunPost(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
             enregistrerCourseViewModel.insertRun(runPost)
+            btnFinishRun.visibility = View.GONE
             stopRun()
         }
     }

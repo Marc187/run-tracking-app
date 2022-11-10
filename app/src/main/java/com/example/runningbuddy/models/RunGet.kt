@@ -5,7 +5,7 @@ data class RunGet(
     val id_utilisateur: Int,
     val nom: String,
     var img: ByteArray,
-    var timeStamps: Long,
+    var timeStamps: String,
     var avgSpeedInKMH: Float,
     var distanceInMeters: Int,
     var timeInMillis: Long,
