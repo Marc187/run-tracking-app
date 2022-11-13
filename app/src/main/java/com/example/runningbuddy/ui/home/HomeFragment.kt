@@ -28,7 +28,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Viewmodel
-        val id = MainActivity.userId
         this.homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         // RecyclerView des courses

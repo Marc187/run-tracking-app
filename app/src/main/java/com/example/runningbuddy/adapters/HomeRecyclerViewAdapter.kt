@@ -32,11 +32,10 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
 
         // Informations de la course
         holder.view.findViewById<TextView>(R.id.tvNameCard).text = course.nom
-        holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "${course.distanceInMeters}m"
+        holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "Distance: ${course.distanceInMeters}m"
         holder.view.findViewById<TextView>(R.id.tvDureeCard).text = "Durée: ${course.timeInMillis}"
-        holder.view.findViewById<TextView>(R.id.tvDateCard).text = "${course.timeStamps}"
-        holder.view.findViewById<ImageView>(R.id.imageMapCard)
-            .setImageBitmap(course.img?.let { converters.toBitmap(it) })
+        holder.view.findViewById<TextView>(R.id.tvDateCard).text = course.timeStamps
+        //holder.view.findViewById<ImageView>(R.id.imageMapCard).setImageBitmap(course.img.let { converters.toBitmap(it) })
 
         // Ajustement de couleur du bouton
         if (course.liked) {
