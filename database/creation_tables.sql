@@ -34,7 +34,7 @@ CREATE TABLE courses (
 	id_utilisateur INT 
 		FOREIGN KEY REFERENCES utilisateurs(id),
 		-- ON DELETE CASCADE,
-	img VARCHAR(255),
+	img varbinary(max),
     timeStamps VARCHAR(255),
     avgSpeedInKMH Float,
     distanceInMeters Int,
