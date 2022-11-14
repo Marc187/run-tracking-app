@@ -105,7 +105,7 @@ class ProfileFragment : Fragment() {
             for(i in 1..12){
                 var found = false
                 for(month in it){
-                    val monthNumber = month.mois.substring(5).toFloat()
+                    val monthNumber = month.mois.split("-").toTypedArray()[1].toFloat()
                     if(i.toFloat() == monthNumber){
                         println(monthNumber)
                         println(month.totdist)
