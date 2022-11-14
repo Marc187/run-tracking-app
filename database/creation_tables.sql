@@ -76,32 +76,21 @@ INSERT INTO abonnements VALUES
 	(4, 2)
 GO
 
-	id INT PRIMARY KEY IDENTITY(1, 1),
-	id_utilisateur INT 
-		FOREIGN KEY REFERENCES utilisateurs(id),
-		-- ON DELETE CASCADE,
-	img varbinary(max),
-    timeStamps VARCHAR(255),
-    avgSpeedInKMH Float,
-    distanceInMeters Int,
-    timeInMillis BIGINT,
-    caloriesBurned Int
 INSERT INTO courses VALUES
-	(5, '[B@2412dde', '2002-9-10', 5.8, 170, 5804, 123)
-	(5, '[B@2412dde', '2002-9-5', 5.8, 75, 0175, 65)
-	(5, '[B@2412dde', '2002-9-18', 5.8, 16, 9451, 53)
-	(5, '[B@2412dde', '2002-10-21', 5.8, 380, 5804, 123)
-	(5, '[B@2412dde', '2002-10-18', 5.8, 83, 0175, 65)
-	(5, '[B@2412dde', '2002-10-28', 5.8, 184, 9451, 53)
-	(5, '[B@2412dde', '2002-11-10', 5.8, 568, 8175, 123)
-	(5, '[B@2412dde', '2002-11-5', 5.8, 185, 01517, 65)
-	(5, '[B@2412dde', '2002-11-18', 5.8, 12, 10578, 53)
-	(5, '[B@2412dde', '2002-12-21', 5.8, 601, 1851, 123)
-	(5, '[B@2412dde', '2002-12-18', 5.8, 157, 50185, 65)
-	(5, '[B@2412dde', '2002-12-28', 5.8, 105, 19575, 53)
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-9-10', 5.8, 170, 5804, 123),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-9-5', 5.8, 75, 0175, 65),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-9-18', 5.8, 16, 9451, 53),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-10-21', 5.8, 380, 5804, 123),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-10-18', 5.8, 83, 0175, 65),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-10-28', 5.8, 184, 9451, 53),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-11-10', 5.8, 568, 8175, 123),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-11-5', 5.8, 185, 01517, 65),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-11-18', 5.8, 12, 10578, 53),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-12-21', 5.8, 601, 1851, 123),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-12-18', 5.8, 157, 50185, 65),
+	(5, Convert(varbinary(max), '[B@2412dde'), '2002-12-28', 5.8, 105, 19575, 53)
 GO
 
-/*
 INSERT INTO likes VALUES
 	(1, 2),
 	(1, 3),
@@ -112,4 +101,3 @@ INSERT INTO likes VALUES
 	(5, 4),
 	(6, 2)
 GO
-*/
