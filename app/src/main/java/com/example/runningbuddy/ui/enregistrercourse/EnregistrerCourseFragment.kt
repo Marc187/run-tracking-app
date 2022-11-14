@@ -74,7 +74,6 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         mapView.getMapAsync {
             map = it
             addAllPolylines()
-            moveCameraToUser()
         }
 
         subscribeToObservers()
@@ -105,6 +104,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         TrackingService.pathPoints.observe(viewLifecycleOwner, Observer  {
             pathPoints = it
             addAllPolylines()
+            moveCameraToUser()
         })
 
         // observe le temps pour pouvoir la formet en fonction de si l'utilisateur cours

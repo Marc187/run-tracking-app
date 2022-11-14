@@ -99,32 +99,25 @@ class ProfileFragment : Fragment() {
 
 
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-            val currentMonth = sdf.format(Date()).substring(3,5)
+            val currentMonth = sdf.format(Date()).substring(3,5).toFloat()
             println(" C Month is  "+currentMonth)
 
             for(i in 1..12){
                 var found = false
                 for(month in it){
+                    println(month)
                     val monthNumber = month.mois.split("-").toTypedArray()[1].toFloat()
                     if(i.toFloat() == monthNumber){
-                        println(monthNumber)
                         println(month.totdist)
                         yValueGroup1.add(BarEntry(monthNumber, month.totdist))
                         yValueGroup2.add(BarEntry(monthNumber, floatArrayOf(0.toFloat())))
                         found = true
 
-                        if(monthNumber == currentMonth.toFloat()){
+                        if(monthNumber == currentMonth){
                             view.findViewById<TextView>(R.id.TvDistance).text = month.totdist.toString()
-                            view.findViewById<TextView>(R.id.TvTemps).text = month.tottime.toString()
+                            view.findViewById<TextView>(R.id.TvTemps).text = month.tottemps.toString()
                             view.findViewById<TextView>(R.id.tvCalorie).text = month.totcalorie.toString()
                             view.findViewById<TextView>(R.id.tvVitesse).text = month.avgspeed.toString()
-                        }
-
-                        else{
-                            view.findViewById<TextView>(R.id.TvDistance).text = "0"
-                            view.findViewById<TextView>(R.id.tvCalorie).text = "0"
-                            view.findViewById<TextView>(R.id.tvVitesse).text = "0"
-                            view.findViewById<TextView>(R.id.TvTemps).text = "0"
                         }
                     }
 

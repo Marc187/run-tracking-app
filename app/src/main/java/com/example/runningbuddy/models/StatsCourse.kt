@@ -5,6 +5,6 @@ data class StatsCourse(
     var totdist: Float,
     var totcalorie: Float,
     var avgspeed: Float,
-    var tottime: Float,
+    var tottemps: Float,
     var mois: String
 )
