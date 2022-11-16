@@ -2,8 +2,24 @@ const express = require('express');
 const request = require('../database/course.js');
 const requestUser = require('../database/utilisateurs.js');
 const router = express.Router();
+const path = require('path');
 const auth = require('../middleware/authentification')
 const userVerification = require('../middleware/user_verification')
+
+// Multer
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+    destination: './uploads/images_courses/',
+    filename: (req, file, cb) => {
+        return cb(null, `${req.params.id_course}${path.extname(file.originalname)}`)
+    }
+});
+
+const upload = multer ({
+    storage: storage
+ });
+
 
 router.get('/:id_course', auth, async (req, res) => {
     try {
@@ -40,7 +56,7 @@ router.post('/', auth, userVerification, async (req, res) => {
 
         const data = await request.addCourse(date, distance, duree, id_utilisateur)
         
-        res.status(200).json({ message: "success" })
+        res.status(200).json({ message: "success", id_course: data })
     } catch (error) {
         res.status(500).json(error.message);
     }
@@ -66,5 +82,25 @@ router.delete('/:id_course', auth, async (req, res) => {
         res.status(500).json(error.message);
     }
 })
+
+
+router.get("/image/:id_course", async (req, res) => {
+    try {
+        image_path = path.join(__dirname, "..", "uploads", "images_courses")
+        res.sendFile(path.join(image_path, req.params.id_course + ".png"));
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+})
+
+router.post("/image/:id_course", upload.single("image_course"), async (req, res) => {
+    try {
+        res.status(200).json({ message: "Image de la course ajoutée avec succès."})
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+})
+
+
 
 module.exports = router;
