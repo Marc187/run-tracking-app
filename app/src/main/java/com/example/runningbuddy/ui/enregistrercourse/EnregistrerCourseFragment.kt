@@ -1,7 +1,9 @@
 package com.example.runningbuddy.ui.enregistrercourse
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.runningbuddy.Constants.ACTION_PAUSE_SERVICE
 import com.example.runningbuddy.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.runningbuddy.Constants.ACTION_STOP_SERVICE
@@ -23,9 +26,12 @@ import com.example.runningbuddy.TrackingUtility
 import com.example.runningbuddy.models.RunPost
 import com.example.runningbuddy.services.Polyline
 import com.example.runningbuddy.services.TrackingService
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
@@ -34,6 +40,8 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
 import kotlin.math.round
 
+
+@SuppressLint("SetTextI18n")
 class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var enregistrerCourseViewModel: EnregistrerCourseViewModel
     private lateinit var mapView: MapView
@@ -43,6 +51,9 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     //Create an object google and then we see this object with mapview
     private var map: GoogleMap? = null
+
+    // declare a global variable of FusedLocationProviderClient
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var curTimeMillis = 0L
 
@@ -74,22 +85,29 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         mapView.getMapAsync {
             map = it
             addAllPolylines()
+            getLastKnownLocation()
         }
 
         subscribeToObservers()
+
+        // in onCreate() initialize FusedLocationProviderClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
+
+
 
     // function to check if tracking then update le button pour start ou stop
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
-        if(!isTracking) {
+        if(!isTracking && curTimeMillis > 0L) {
             btnStartRun.text = "Start"
             btnFinishRun.visibility = View.VISIBLE
-        } else {
+        } else if(isTracking) {
             btnStartRun.text = "Stop"
             btnFinishRun.visibility = View.GONE
         }
     }
+
 
 
     private fun subscribeToObservers() {
@@ -105,6 +123,9 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             pathPoints = it
             addAllPolylines()
             moveCameraToUser()
+            tvDistanceEnregistrer.text = "${calculateDistanceInMeters()} m"
+            tvAvgSpeedEnregistrer.text = "${calculateAvgSpeed()} km/h"
+            tvCaloriesBurnedEnregistrer.text = "${calculateCaloriesBurned()} calories"
         })
 
         // observe le temps pour pouvoir la formet en fonction de si l'utilisateur cours
@@ -130,7 +151,34 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
 
     private fun stopRun() {
+        tvtimer.text = "00:00:00:00"
+        tvDistanceEnregistrer.text = "0 m"
+        tvAvgSpeedEnregistrer.text = "0 km/h"
+        tvCaloriesBurnedEnregistrer.text = "0 calories"
         sendCommandToService(ACTION_STOP_SERVICE)
+    }
+
+
+
+    /*
+     * call this method for receive location
+     * get location and give callback when successfully retrieve
+     * function itself check location permission before access related methods
+     */
+    @SuppressLint("MissingPermission")
+    fun getLastKnownLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                if (location != null) {
+                    //println(location.longitude, location.latitude)
+                    map?.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            LatLng(location.latitude, location.longitude),
+                            MAP_ZOOM
+                        )
+                    )
+                }
+            }
     }
 
 
@@ -169,25 +217,53 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     }
 
 
+
+    /* TODO( : Pt changer à quelle interval l'utilisateur se fait positioner
+                pour avoir une update plus recente)
+     */
+    // Function calculate pour avoir les stats sur la course
+    private fun calculateDistanceInMeters(): Int {
+        var distance = 0
+        for (polyline in pathPoints) {
+            distance += TrackingUtility.calculatePolylineLength(polyline).toInt()
+        }
+        return distance
+    }
+
+    private fun calculateAvgSpeed(): Float {
+        return round(
+            (calculateDistanceInMeters() / 1000f) / (curTimeMillis / 1000f / 60 / 60) * 10
+        ) / 10f
+    }
+
+    private fun calculateCaloriesBurned(): Int {
+        return if (calculateDistanceInMeters() != 0) {
+            ((calculateDistanceInMeters() / 1000f) * 80f).toInt()
+        } else 0
+    }
+
+
+
     private fun endRunAndSaveToDb() {
         map?.snapshot { bmp ->
-            var distanceInMeters = 0
-            for (polyline in pathPoints) {
-                distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
-            }
-            // TODO: Changer les calcul et modoifer tampstamp pour une vria date
-            val avgSpeed = round((distanceInMeters / 1000f) / (curTimeMillis / 1000f / 60 / 60) *10) / 10f
+            val distanceInMeters = calculateDistanceInMeters()
+            // TODO: Changer les calcul
+            val avgSpeed = calculateAvgSpeed()
             val calendar = Calendar.getInstance()
             val dateTimeStamp =              //Plus 1 pcq les mois commence a 0
                 "${calendar[Calendar.YEAR]}-${calendar[Calendar.MONTH] + 1}-${calendar[Calendar.DATE]}"
             println(dateTimeStamp)
-            val caloriesBurned = ((distanceInMeters / 1000f) * 80f).toInt()
+            val caloriesBurned = calculateCaloriesBurned()
             val runPost = RunPost(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
             enregistrerCourseViewModel.insertRun(runPost)
-            btnFinishRun.visibility = View.GONE
             stopRun()
+            requireView().findNavController().navigate(
+                R.id.navigation_home
+            )
         }
     }
+
+
 
     // Add all polyline when the device is rotated
     private fun addAllPolylines() {
@@ -200,7 +276,9 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
-    // rajoute le dernier polyline
+
+
+    // rajoute le dernier polyline (FONCTIONNE PAS!!!)
     private fun addLatestPolyline() {
         if(pathPoints.isEmpty() && pathPoints.last().size > 1) {
             val preLastLatLng = pathPoints.last()[pathPoints.last().size - 2]
@@ -214,6 +292,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+
+
     // petite fonction permettant d'envoyer une action au service
     private fun sendCommandToService(action: String) =
         //it == intent
@@ -221,6 +301,9 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             it.action = action
             requireContext().startService(it)
         }
+
+
+
 
     override fun onResume() {
         super.onResume()

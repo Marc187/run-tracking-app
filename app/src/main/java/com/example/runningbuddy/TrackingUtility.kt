@@ -36,7 +36,7 @@ object TrackingUtility {
             val result = FloatArray(1)
             Location.distanceBetween(
                 pos1.latitude,
-                pos2.latitude,
+                pos1.longitude,
                 pos2.latitude,
                 pos2.longitude,
                 result
