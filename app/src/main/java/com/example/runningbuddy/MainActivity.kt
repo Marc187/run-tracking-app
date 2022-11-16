@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,6 +16,8 @@ import com.example.runningbuddy.ui.settings.SettingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+    lateinit var navHostFragment : NavHostFragment
+    lateinit var navController : NavController
 
     companion object {
         var TOKEN = ""
@@ -27,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         this.setContentView(R.layout.activity_main)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        val navController = navHostFragment.navController
+        this.navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        this.navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -52,15 +55,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        
+
         // Handle item selection
         return when (item.itemId) {
             R.id.settings -> {
-//                Navigation.findNavController().navigate(R.id.setting)
+                navController.navigate(R.id.setting)
                 true
             }
             R.id.friends -> {
-
+                navController.navigate(R.id.friends)
                 true
             }
             else -> super.onOptionsItemSelected(item)
