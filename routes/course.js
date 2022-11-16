@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer ({
     storage: storage
- });
+});
 
 
 router.get('/:id_course', auth, async (req, res) => {
