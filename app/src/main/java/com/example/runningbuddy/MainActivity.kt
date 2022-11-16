@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = this.findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)
+        navView.setOnItemReselectedListener { /* NOTHING */ }
 
 
     }
