@@ -13,6 +13,7 @@ import com.example.runningbuddy.R
 import com.example.runningbuddy.converters.Converters
 import com.example.runningbuddy.models.RunGet
 import com.example.runningbuddy.ui.home.HomeViewModel
+import com.squareup.picasso.Picasso
 import java.math.BigInteger
 
 class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, private val homeViewModel: HomeViewModel) :
@@ -36,6 +37,9 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
         holder.view.findViewById<TextView>(R.id.tvDureeCard).text = "Durée: ${course.timeInMillis}"
         holder.view.findViewById<TextView>(R.id.tvDateCard).text = course.timeStamps
         //holder.view.findViewById<ImageView>(R.id.imageMapCard).setImageBitmap(course.img.let { converters.toBitmap(it) })
+
+        val imageView = holder.view.findViewById<ImageView>(R.id.imageMapCard)
+        Picasso.get().load("https://projet3-running-buddy.herokuapp.com/course/image/1").into(imageView)
 
         // Ajustement de couleur du bouton
         if (course.liked) {
