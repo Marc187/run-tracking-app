@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.runningbuddy.Constants.ACTION_PAUSE_SERVICE
@@ -69,7 +68,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         super.onViewCreated(view, savedInstanceState)
         requestPermissions()
         enregistrerCourseViewModel =
-            ViewModelProvider(this).get(EnregistrerCourseViewModel::class.java)
+            ViewModelProvider(this)[EnregistrerCourseViewModel::class.java]
 
         mapView = requireView().findViewById(R.id.mapView)
         btnStartRun.setOnClickListener {
@@ -113,27 +112,27 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     private fun subscribeToObservers() {
         // function permettant de d'observer
         // le state de isTracking et d'update le tracking en fonction
-        TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
+        TrackingService.isTracking.observe(viewLifecycleOwner) {
             updateTracking(it)
-        })
+        }
 
         // observe aussi les pathpoints pour les rajouter et
         // bouger la camera en fonction de la postion
-        TrackingService.pathPoints.observe(viewLifecycleOwner, Observer  {
+        TrackingService.pathPoints.observe(viewLifecycleOwner) {
             pathPoints = it
             addAllPolylines()
             moveCameraToUser()
             tvDistanceEnregistrer.text = "${calculateDistanceInMeters()} m"
             tvAvgSpeedEnregistrer.text = "${calculateAvgSpeed()} km/h"
             tvCaloriesBurnedEnregistrer.text = "${calculateCaloriesBurned()} calories"
-        })
+        }
 
         // observe le temps pour pouvoir la formet en fonction de si l'utilisateur cours
-        TrackingService.timeRunInMillis.observe(viewLifecycleOwner, Observer {
+        TrackingService.timeRunInMillis.observe(viewLifecycleOwner) {
             curTimeMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(curTimeMillis, true)
             tvtimer.text = formattedTime
-        })
+        }
     }
 
 
@@ -218,9 +217,6 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
 
 
-    /* TODO( : Pt changer à quelle interval l'utilisateur se fait positioner
-                pour avoir une update plus recente)
-     */
     // Function calculate pour avoir les stats sur la course
     private fun calculateDistanceInMeters(): Int {
         var distance = 0
@@ -230,6 +226,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         return distance
     }
 
+    // TODO : changer en minute par km
     private fun calculateAvgSpeed(): Float {
         return round(
             (calculateDistanceInMeters() / 1000f) / (curTimeMillis / 1000f / 60 / 60) * 10
@@ -247,7 +244,6 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     private fun endRunAndSaveToDb() {
         map?.snapshot { bmp ->
             val distanceInMeters = calculateDistanceInMeters()
-            // TODO: Changer les calcul
             val avgSpeed = calculateAvgSpeed()
             val calendar = Calendar.getInstance()
             val dateTimeStamp =              //Plus 1 pcq les mois commence a 0
@@ -278,7 +274,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
 
 
-    // rajoute le dernier polyline (FONCTIONNE PAS!!!)
+    // TODO : pt enelever cet fonction la
+    /** rajoute le dernier polyline (FONCTIONNE PAS!!!)
     private fun addLatestPolyline() {
         if(pathPoints.isEmpty() && pathPoints.last().size > 1) {
             val preLastLatLng = pathPoints.last()[pathPoints.last().size - 2]
@@ -291,6 +288,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             map?.addPolyline(polylineOptions)
         }
     }
+    **/
 
 
 
@@ -375,13 +373,13 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {}
 
-
-    // TODO : modifer les trucs deprecated
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        // TODO : changer deprecated pt si ca work
+        @Suppress("DEPRECATION")
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }

@@ -7,13 +7,10 @@ import android.app.NotificationManager.IMPORTANCE_LOW
 import android.content.Context
 import android.content.Intent
 import android.location.Location
-import android.os.Build
 import android.os.Looper
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.example.runningbuddy.Constants.ACTION_PAUSE_SERVICE
 import com.example.runningbuddy.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.runningbuddy.Constants.ACTION_STOP_SERVICE
@@ -51,11 +48,11 @@ typealias Polylines = MutableList<Polyline>
 
 class TrackingService : LifecycleService() {
 
-    var isFirstRun = true
-    var serviceKilled = false
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var isFirstRun = true
+    private var serviceKilled = false
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val timeRunInSeconds = MutableLiveData<Long>()
-    lateinit var notificationBuilder: NotificationCompat.Builder
+    private lateinit var notificationBuilder: NotificationCompat.Builder
 
     companion object {
         val timeRunInMillis = MutableLiveData<Long>()
@@ -78,18 +75,18 @@ class TrackingService : LifecycleService() {
         postInitialValues()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        isTracking.observe(this, Observer {
+        isTracking.observe(this) {
             updateLocationTracking(it)
-        })
+        }
     }
 
-    // TODO : Remove deprecated
+
     private fun killService() {
         serviceKilled = true
         isFirstRun = true
         pauseService()
         postInitialValues()
-        stopForeground(true)
+        stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
 
@@ -151,17 +148,18 @@ class TrackingService : LifecycleService() {
         isTimerEnabled = false
     }
 
-    // TODO: Changer les trucs deprecated
+
+
     @SuppressLint("MissingPermission")
     private fun updateLocationTracking(isTracking: Boolean) {
         if(isTracking) {
             if(TrackingUtility.hasLocationPermissions(this)) {
-                //Changer create to builder mais probleme arrive
-                val request = LocationRequest.create().apply {
-                    interval = LOCATION_UPDATE_INTERVAL
-                    fastestInterval = FASTEST_LOCATION_INTERVAL
-                    priority = PRIORITY_HIGH_ACCURACY
-                }
+                val request = LocationRequest.Builder(PRIORITY_HIGH_ACCURACY,
+                    LOCATION_UPDATE_INTERVAL)
+                    .setWaitForAccurateLocation(true)
+                    .setMinUpdateIntervalMillis(FASTEST_LOCATION_INTERVAL)
+                    .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL)
+                    .build()
                 fusedLocationProviderClient.requestLocationUpdates(
                     request,
                     locationCallback,
@@ -174,7 +172,7 @@ class TrackingService : LifecycleService() {
     }
 
 
-    val locationCallback = object : LocationCallback() {
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             super.onLocationResult(result)
             if(isTracking.value!!) {
@@ -213,9 +211,7 @@ class TrackingService : LifecycleService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
                 as NotificationManager
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(notificationManager)
-        }
+        createNotificationChannel(notificationManager)
 
         // TODO: Move cest fonction la ailleurs pour factoriser (pt pas en faite haha)
         notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
@@ -228,16 +224,16 @@ class TrackingService : LifecycleService() {
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
 
         // Permet d'update le temps dans la notif
-        timeRunInSeconds.observe(this, Observer {
-            if(!serviceKilled) {
+        timeRunInSeconds.observe(this) {
+            if (!serviceKilled) {
                 val notification = notificationBuilder
                     .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
                 notificationManager.notify(NOTIFICATION_ID, notification.build())
             }
-        })
+        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun createNotificationChannel(notificationManager: NotificationManager) {
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
