@@ -58,8 +58,8 @@ router.post('/', auth, userVerification, async (req, res) => {
         }
 
         const data = await request.addCourse(id_utilisateur, img, timeStamps, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned)
-        
-        res.status(200).json({ message: "success", id_course: data[0].id_course })
+
+        res.status(200).json({ message: "success", id_course: data[0].id })
     } catch (error) {
         res.status(500).json(error.message);
     }
