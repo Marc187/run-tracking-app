@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const request = require('../database/utilisateurs')
 
-router.get('/name', async (req, res) => {
+router.get('/:name', async (req, res) => {
     try {
         // Accede a la BD et retourne les utilisateurs selon le nom
         const name = req.params.name
