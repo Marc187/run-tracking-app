@@ -13,6 +13,8 @@ class FriendsViewModel (val app: Application) : AndroidViewModel(app) {
     var name = ""
 
     fun getUsersByName(){
-        friendRepository.getUsersByName(friends, name)
+        if (name != "") {
+            friendRepository.getUsersByName(friends, name)
+        }
     }
 }

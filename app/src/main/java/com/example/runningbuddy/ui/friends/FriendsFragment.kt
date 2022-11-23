@@ -39,7 +39,7 @@ class FriendsFragment : Fragment() {
             friendsViewModel.name = it.toString()
             friendsViewModel.getUsersByName()
         }
-        
+
 
         // RecyclerView des courses
         this.rvFriends = requireView().findViewById(R.id.rvFriends)
