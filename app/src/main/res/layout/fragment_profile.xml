@@ -14,11 +14,11 @@
         android:layout_marginTop="20dp"
         android:text="Ce mois"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imageCourse"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageCourse"
         android:layout_width="41dp"
         android:layout_height="39dp"
         android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
         android:text="Distance"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageCourse" />
 
     <TextView
         android:id="@+id/textView5"
@@ -47,7 +47,7 @@
         android:text="Temps"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageCourse" />
 
     <TextView
         android:id="@+id/TvDistance"
@@ -129,7 +129,7 @@
         android:text="Calorie Brulé"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageCourse" />
 
     <TextView
         android:id="@+id/textView11"
@@ -140,7 +140,7 @@
         android:text="Vitesse Moyenne"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageCourse" />
 
     <TextView
         android:id="@+id/textView13"

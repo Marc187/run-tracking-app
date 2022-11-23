@@ -1,18 +1,19 @@
 package com.example.runningbuddy.ui.profile
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.runningbuddy.R
-import com.example.runningbuddy.models.StatsCourse
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -22,10 +23,8 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
-import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ProfileFragment : Fragment() {
@@ -59,6 +58,19 @@ class ProfileFragment : Fragment() {
         profilViewModel.statscourse.observe(viewLifecycleOwner){
 
             barChartView  = view.findViewById(R.id.idBarChart)
+            val coureur = view.findViewById<ImageView>(R.id.imageCourse)
+
+            when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    barChartView.getAxisLeft().setTextColor(getResources().getColor(R.color.white));
+                    barChartView.getAxisLeft().setAxisLineColor(getResources().getColor(R.color.white));
+                    barChartView.getXAxis().setTextColor(getResources().getColor(R.color.white));
+                    barChartView.getXAxis().setAxisLineColor(getResources().getColor(R.color.white));
+                    coureur.setColorFilter(
+                        ContextCompat.getColor(requireContext(), android.R.color.white),
+                        PorterDuff.Mode.MULTIPLY);
+                }
+            }
 
             val barWidth: Float
             val barSpace: Float
