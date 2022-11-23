@@ -7,6 +7,12 @@ function getUserById(id) {
         .where('id', id)
 }
 
+function getUserByName(name) {
+    return knex('utilisateurs')
+        .where('nom', 'like', `%${name}%`)
+}
+
 module.exports = {
     getUserById,
+    getUserByName
 };
