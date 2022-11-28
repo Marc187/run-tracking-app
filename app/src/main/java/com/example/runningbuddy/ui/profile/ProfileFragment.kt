@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.R
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
@@ -60,6 +61,7 @@ class ProfileFragment : Fragment() {
             barChartView  = view.findViewById(R.id.idBarChart)
             val coureur = view.findViewById<ImageView>(R.id.imageCourse)
 
+            //Set couleur graphique blanc si dark mode
             when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
                 Configuration.UI_MODE_NIGHT_YES -> {
                     barChartView.getAxisLeft().setTextColor(getResources().getColor(R.color.white));
@@ -71,6 +73,12 @@ class ProfileFragment : Fragment() {
                         PorterDuff.Mode.MULTIPLY);
                 }
             }
+
+            //Set les unités de mesure
+            view.findViewById<TextView>(R.id.uniteDistance).text = MainActivity.uniteMesure
+            view.findViewById<TextView>(R.id.uniteVitesse).text = MainActivity.uniteMesure
+
+
 
             val barWidth: Float
             val barSpace: Float
@@ -121,15 +129,35 @@ class ProfileFragment : Fragment() {
                     val monthNumber = month.mois.split("-").toTypedArray()[1].toFloat()
                     if(i.toFloat() == monthNumber){
                         println(month.totdist)
-                        yValueGroup1.add(BarEntry(monthNumber, month.totdist))
-                        yValueGroup2.add(BarEntry(monthNumber, floatArrayOf(0.toFloat())))
+                        if(MainActivity.uniteMesure == "km") {
+                            yValueGroup1.add(BarEntry(monthNumber, month.totdist/1000))
+                            yValueGroup2.add(BarEntry(monthNumber, floatArrayOf(0.toFloat())))
+                        }
+                        else{
+                            yValueGroup1.add(BarEntry(monthNumber, month.totdist/1609))
+                            yValueGroup2.add(BarEntry(monthNumber, floatArrayOf(0.toFloat())))
+                        }
+
                         found = true
 
                         if(monthNumber == currentMonth){
-                            view.findViewById<TextView>(R.id.TvDistance).text = month.totdist.toString()
+                            //Changer les données en fonction de l'unité de mesure
+                            if(MainActivity.uniteMesure == "km") {
+                                val distanceTotKm:Double = String.format("%.2f", month.totdist/1000).toDouble()
+                                val avgSpeedKm:Double = String.format("%.2f", month.avgspeed).toDouble()
+                                view.findViewById<TextView>(R.id.TvDistance).text = (distanceTotKm).toString()
+                                view.findViewById<TextView>(R.id.tvVitesse).text = avgSpeedKm.toString()
+                            }
+                            else{
+                                val distanceTotMiles:Double = String.format("%.2f", month.totdist/1609).toDouble()
+                                val avgSpeedMiles:Double = String.format("%.2f", month.avgspeed/1.609).toDouble()
+                                view.findViewById<TextView>(R.id.TvDistance).text = (distanceTotMiles).toString()
+                                view.findViewById<TextView>(R.id.tvVitesse).text = (avgSpeedMiles).toString()
+                            }
+
                             view.findViewById<TextView>(R.id.TvTemps).text = month.tottemps.toString()
                             view.findViewById<TextView>(R.id.tvCalorie).text = month.totcalorie.toString()
-                            view.findViewById<TextView>(R.id.tvVitesse).text = month.avgspeed.toString()
+
                         }
                     }
 

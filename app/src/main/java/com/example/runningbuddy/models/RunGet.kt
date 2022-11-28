@@ -7,7 +7,7 @@ data class RunGet(
     //var img: ByteArray,
     var timeStamps: String,
     var avgSpeedInKMH: Float,
-    var distanceInMeters: Int,
+    var distanceInMeters: Float,
     var timeInMillis: Long,
     var caloriesBurned: Int,
     var liked: Boolean

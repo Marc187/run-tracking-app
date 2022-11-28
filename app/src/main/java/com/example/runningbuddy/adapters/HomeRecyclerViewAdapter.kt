@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.R
 import com.example.runningbuddy.converters.Converters
 import com.example.runningbuddy.models.RunGet
@@ -33,10 +34,15 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
 
         // Informations de la course
         holder.view.findViewById<TextView>(R.id.tvNameCard).text = course.nom
-        holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "Distance: ${course.distanceInMeters}m"
         holder.view.findViewById<TextView>(R.id.tvDureeCard).text = "Durée: ${course.timeInMillis}"
         holder.view.findViewById<TextView>(R.id.tvDateCard).text = course.timeStamps
         //holder.view.findViewById<ImageView>(R.id.imageMapCard).setImageBitmap(course.img.let { converters.toBitmap(it) })
+        if(MainActivity.uniteMesure == "km"){
+            holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "Distance: ${String.format("%.2f", (course.distanceInMeters/1000))} ${MainActivity.uniteMesure}"
+        }
+        else{
+            holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "Distance: ${String.format("%.2f", (course.distanceInMeters/1609))} ${MainActivity.uniteMesure}"
+        }
 
         val imageView = holder.view.findViewById<ImageView>(R.id.imageMapCard)
         Picasso.get().load("https://projet3-running-buddy.herokuapp.com/course/image/1").into(imageView)

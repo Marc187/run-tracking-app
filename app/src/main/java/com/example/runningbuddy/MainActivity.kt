@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         var TOKEN = ""
         var SRVURL = "https://projet3-running-buddy.herokuapp.com"
         var userId: Int = 0
+        var uniteMesure = "km"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

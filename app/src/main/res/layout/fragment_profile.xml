@@ -80,14 +80,14 @@
         tools:text="30" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/uniteDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:text="km"
         app:layout_constraintStart_toEndOf="@+id/TvDistance"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        tools:text="km" />
 
     <TextView
         android:id="@+id/TvTemps"
@@ -143,14 +143,14 @@
         app:layout_constraintTop_toBottomOf="@+id/imageCourse" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/uniteVitesse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:text="km/h"
         app:layout_constraintStart_toEndOf="@+id/tvVitesse"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:text="km" />
 
     <TextView
         android:id="@+id/textView14"
@@ -161,5 +161,14 @@
         android:text="kcal"
         app:layout_constraintStart_toEndOf="@+id/tvCalorie"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="/h"
+        app:layout_constraintStart_toEndOf="@+id/uniteVitesse"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

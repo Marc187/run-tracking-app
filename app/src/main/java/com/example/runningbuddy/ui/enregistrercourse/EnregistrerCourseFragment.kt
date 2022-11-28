@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -19,6 +20,7 @@ import com.example.runningbuddy.Constants.MAP_ZOOM
 import com.example.runningbuddy.Constants.POLYLINE_COLOR
 import com.example.runningbuddy.Constants.POLYLINE_WIDTH
 import com.example.runningbuddy.Constants.REQUEST_CODE_LOCATION_PERMISSION
+import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.MainActivity.Companion.userId
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
@@ -91,6 +93,10 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
         // in onCreate() initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        //Initialiser les unités de mesure
+        uniteMesureEnregistree.text = MainActivity.uniteMesure
+        tvAvgSpeedEnregistrer.text = "0"
     }
 
 
@@ -123,7 +129,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             addAllPolylines()
             moveCameraToUser()
             tvDistanceEnregistrer.text = "${calculateDistanceInMeters()} m"
-            tvAvgSpeedEnregistrer.text = "${calculateAvgSpeed()} km/h"
+            tvAvgSpeedEnregistrer.text = calculateAvgSpeed().toString()
             tvCaloriesBurnedEnregistrer.text = "${calculateCaloriesBurned()} calories"
         }
 
@@ -152,7 +158,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     private fun stopRun() {
         tvtimer.text = "00:00:00:00"
         tvDistanceEnregistrer.text = "0 m"
-        tvAvgSpeedEnregistrer.text = "0 km/h"
+        tvAvgSpeedEnregistrer.text = "0"
         tvCaloriesBurnedEnregistrer.text = "0 calories"
         sendCommandToService(ACTION_STOP_SERVICE)
     }

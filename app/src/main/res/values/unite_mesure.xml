@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="spinner_items">
+        <item> km</item>
+        <item> mi</item>
+    </array>
+</resources>
