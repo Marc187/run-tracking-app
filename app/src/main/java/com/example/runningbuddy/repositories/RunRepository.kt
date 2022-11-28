@@ -1,12 +1,14 @@
 package com.example.runningbuddy.repositories
 
 import android.app.Application
-import com.android.volley.Request
+import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.converters.Converters
 import com.example.runningbuddy.models.RunPost
+import com.example.runningbuddy.ui.enregistrercourse.EnregistrerCourseFragment
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -14,7 +16,9 @@ import org.json.JSONObject
 class RunRepository (private val application: Application) {
     private var converters: Converters = Converters()
 
-    fun insertRun(runPost: RunPost) {
+    fun insertRun(runPost: RunPost, id_course: MutableLiveData<Int>, image: Bitmap) {
+
+
         val queue = Volley.newRequestQueue(application)
         val runObject = JSONObject()
         try {
@@ -35,6 +39,11 @@ class RunRepository (private val application: Application) {
             "https://projet3-running-buddy.herokuapp.com/course", runObject,
             {
                 println(it)
+                // EnregistrerCourseFragment.id_course = it.getInt("id_course")
+                id_course.postValue(it.getInt("id_course"))
+                println(it.getInt("id_course"))
+                val imgRepo = RunImageRepository(application)
+                imgRepo.uploadImage(it.getInt("id_course"), image)
             },
             {
                 println(it.message)

@@ -6,9 +6,11 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +26,7 @@ import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.MainActivity.Companion.userId
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
+import com.example.runningbuddy.databinding.ActivityMainBinding
 import com.example.runningbuddy.models.RunPost
 import com.example.runningbuddy.services.Polyline
 import com.example.runningbuddy.services.TrackingService
@@ -35,7 +38,11 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
-import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
+//import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
@@ -68,9 +75,13 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         requestPermissions()
         enregistrerCourseViewModel =
             ViewModelProvider(this)[EnregistrerCourseViewModel::class.java]
+
+        val btnStartRun = requireView().findViewById<Button>(R.id.btnStartRun)
+        val btnFinishRun = requireView().findViewById<Button>(R.id.btnFinishRun)
 
         mapView = requireView().findViewById(R.id.mapView)
         btnStartRun.setOnClickListener {
@@ -95,8 +106,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         //Initialiser les unités de mesure
-        uniteMesureEnregistree.text = MainActivity.uniteMesure
-        tvAvgSpeedEnregistrer.text = "0"
+        requireView().findViewById<TextView>(R.id.uniteMesureEnregistree).text = MainActivity.uniteMesure
+        requireView().findViewById<TextView>(R.id.tvAvgSpeedEnregistrer).text = "0"
     }
 
 
@@ -105,11 +116,11 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if(!isTracking && curTimeMillis > 0L) {
-            btnStartRun.text = "Start"
-            btnFinishRun.visibility = View.VISIBLE
+            requireView().findViewById<Button>(R.id.btnStartRun).text = "Start"
+            requireView().findViewById<Button>(R.id.btnFinishRun).visibility = View.VISIBLE
         } else if(isTracking) {
-            btnStartRun.text = "Stop"
-            btnFinishRun.visibility = View.GONE
+            requireView().findViewById<Button>(R.id.btnStartRun).text = "Stop"
+            requireView().findViewById<Button>(R.id.btnFinishRun).visibility = View.GONE
         }
     }
 
@@ -128,16 +139,21 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             pathPoints = it
             addAllPolylines()
             moveCameraToUser()
-            tvDistanceEnregistrer.text = "${calculateDistanceInMeters()} m"
-            tvAvgSpeedEnregistrer.text = calculateAvgSpeed().toString()
-            tvCaloriesBurnedEnregistrer.text = "${calculateCaloriesBurned()} calories"
+            requireView().findViewById<TextView>(R.id.tvDistanceEnregistrer).text = "${calculateDistanceInMeters()} m"
+            requireView().findViewById<TextView>(R.id.tvAvgSpeedEnregistrer).text = calculateAvgSpeed().toString()
+            requireView().findViewById<TextView>(R.id.tvCaloriesBurnedEnregistrer).text = "${calculateCaloriesBurned()} calories"
         }
 
         // observe le temps pour pouvoir la formet en fonction de si l'utilisateur cours
         TrackingService.timeRunInMillis.observe(viewLifecycleOwner) {
             curTimeMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(curTimeMillis, true)
-            tvtimer.text = formattedTime
+            requireView().findViewById<TextView>(R.id.tvtimer).text = formattedTime
+        }
+
+        // Creation objet et POST les donnees de la course
+        enregistrerCourseViewModel.id_course.observe(viewLifecycleOwner) {
+            println("id observer: $it")
         }
     }
 
@@ -156,10 +172,10 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
 
     private fun stopRun() {
-        tvtimer.text = "00:00:00:00"
-        tvDistanceEnregistrer.text = "0 m"
-        tvAvgSpeedEnregistrer.text = "0"
-        tvCaloriesBurnedEnregistrer.text = "0 calories"
+        requireView().findViewById<TextView>(R.id.tvtimer).text = "00:00:00:00"
+        requireView().findViewById<TextView>(R.id.tvDistanceEnregistrer).text = "0 m"
+        requireView().findViewById<TextView>(R.id.tvAvgSpeedEnregistrer).text = "0"
+        requireView().findViewById<TextView>(R.id.tvCaloriesBurnedEnregistrer).text = "0 calories"
         sendCommandToService(ACTION_STOP_SERVICE)
     }
 
@@ -249,6 +265,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     private fun endRunAndSaveToDb() {
         map?.snapshot { bmp ->
+            // Calcul des donnees de la course
             val distanceInMeters = calculateDistanceInMeters()
             val avgSpeed = calculateAvgSpeed()
             val calendar = Calendar.getInstance()
@@ -256,8 +273,16 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
                 "${calendar[Calendar.YEAR]}-${calendar[Calendar.MONTH] + 1}-${calendar[Calendar.DATE]}"
             println(dateTimeStamp)
             val caloriesBurned = calculateCaloriesBurned()
+
             val runPost = RunPost(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
-            enregistrerCourseViewModel.insertRun(runPost)
+            if (bmp != null) {
+                enregistrerCourseViewModel.insertRun(runPost, bmp)
+            }
+
+            println("Main course print: ${enregistrerCourseViewModel.id_course.value}")
+
+
+            // Arrete le trajet
             stopRun()
             requireView().findNavController().navigate(
                 R.id.navigation_home
