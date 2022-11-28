@@ -1,5 +1,6 @@
 package com.example.runningbuddy.ui.settings
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,29 +40,41 @@ class SettingFragment : Fragment() {
         //Switch bouton for dark mode
         val switchBtn = view.findViewById<Switch>(R.id.switchTheme)
 
-        when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                switchBtn.setChecked(true);
-            }
+        //Spinner for unite de mesure
+        val spinner: Spinner = view.findViewById(R.id.uniteMesureSpinner)
+
+        //Créer sauvegarde des settings
+        val sharedPreference =  this.requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val switchTheme: Boolean = sharedPreference.getBoolean("switchTheme", false)
+        val uniteMesure: String? = sharedPreference.getString("uniteMesure", "km")
+        var editor = sharedPreference.edit()
+
+        //Set les settings déjà sauvegardé
+        if(switchTheme){
+            switchBtn.setChecked(true)
+        }else{
+            switchBtn.setChecked(false)
         }
+
+        spinner.setSelection(
+            (spinner.getAdapter() as ArrayAdapter<String?>).getPosition(
+                uniteMesure
+            )
+        )
 
         switchBtn.setOnCheckedChangeListener { _, isChecked ->
 
             if (switchBtn.isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putBoolean("switchTheme",true)
+                editor.apply()
 
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                editor.putBoolean("switchTheme",false)
+                editor.apply()
             }
         }
-
-        //Spinner for unite de mesure
-        val spinner: Spinner = view.findViewById(R.id.uniteMesureSpinner)
-        spinner.setSelection(
-            (spinner.getAdapter() as ArrayAdapter<String?>).getPosition(
-                MainActivity.uniteMesure
-            )
-        )
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -71,7 +84,8 @@ class SettingFragment : Fragment() {
                 id: Long
             ) {
                 MainActivity.uniteMesure = parent?.selectedItem.toString()
-                println(MainActivity.uniteMesure)
+                editor.putString("uniteMesure",parent?.selectedItem.toString())
+                editor.apply()
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 // TODO Auto-generated method stub

@@ -1,11 +1,13 @@
 package com.example.runningbuddy
 
+import android.content.Context
 import android.graphics.Color
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -45,6 +47,20 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = this.findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)
         navView.setOnItemReselectedListener { /* NOTHING */ }
+
+
+        //Get les réglages
+        val sharedPreference =  getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val switchTheme: Boolean = sharedPreference.getBoolean("switchTheme", false)
+        val uniteMesure: String? = sharedPreference.getString("uniteMesure", "km")
+
+        if(switchTheme){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        MainActivity.uniteMesure = uniteMesure.toString()
 
 
     }
