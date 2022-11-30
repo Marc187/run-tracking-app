@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Switch
+import android.widget.*
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningbuddy.MainActivity
@@ -22,6 +20,7 @@ import com.github.mikephil.charting.charts.BarChart
 class SettingFragment : Fragment() {
 
     lateinit var barChartView: BarChart
+    private lateinit var settingViewModel: SettingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +35,30 @@ class SettingFragment : Fragment() {
         val settingViewModel =
             ViewModelProvider(this).get(SettingViewModel::class.java)
         requireActivity().actionBar?.title = "Réglage"
+
+        view.findViewById<EditText>(R.id.oldPassword).setText(settingViewModel.oldPassword)
+        view.findViewById<EditText>(R.id.oldPassword).addTextChangedListener {
+            settingViewModel.oldPassword = it.toString()
+        }
+        view.findViewById<EditText>(R.id.newPassword).setText(settingViewModel.newPassword)
+        view.findViewById<EditText>(R.id.newPassword).addTextChangedListener {
+            settingViewModel.newPassword = it.toString()
+        }
+
+        val buttonResetPassword = view.findViewById<Button>(R.id.buttonResetPassword)
+        buttonResetPassword.setOnClickListener{
+            println(view.findViewById<EditText>(R.id.newPassword).text)
+            println(view.findViewById<EditText>(R.id.comfirmNewPassword).text)
+
+            val newpassword = view.findViewById<EditText>(R.id.newPassword).text
+            val confNewPassword = view.findViewById<EditText>(R.id.comfirmNewPassword).text
+            if(newpassword.toString() == confNewPassword.toString()){
+                settingViewModel.resetPassword()
+            }
+            else{
+                println("Les mots de passe ne sont pas identique")
+            }
+        }
 
         //Switch bouton for dark mode
         val switchBtn = view.findViewById<Switch>(R.id.switchTheme)
