@@ -12,6 +12,7 @@ const multer = require("multer");
 const storage = multer.diskStorage({
     destination: `${process.cwd()}/uploads/images_courses/`,
     filename: (req, file, cb) => {
+        console.log(`${req.params.id_course}${path.extname(file.originalname)}`)
         return cb(null, `${req.params.id_course}${path.extname(file.originalname)}`)
     }
 });
