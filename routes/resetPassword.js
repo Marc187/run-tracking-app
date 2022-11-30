@@ -6,7 +6,7 @@ const auth = require('../middleware/authentification')
 
 router.put('/', auth ,async (req, res) => {
     try {
-        const id = req.body.id;
+        const id = req.user.id;
         const oldPassword = req.body.oldpassword;
         const newPassword = bcrypt.hashSync(req.body.newpassword);
 
