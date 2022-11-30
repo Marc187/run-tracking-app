@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     destination: `${process.cwd()}/uploads/images_courses/`,
     filename: (req, file, cb) => {
         console.log(`${req.params.id_course}${path.extname(file.originalname)}`)
-        return cb(null, `${req.params.id_course}${path.extname(file.originalname)}`)
+        return cb(null, `${req.params.id_course}.png`)
     }
 });
 
@@ -92,7 +92,7 @@ router.get("/image/:id_course", async (req, res) => {
     try {
         image_path = path.join(__dirname, "..", "uploads", "images_courses")
         console.log(image_path)
-        res.sendFile(path.join(image_path, req.params.id_course));
+        res.sendFile(path.join(image_path, req.params.id_course + ".png"));
     } catch (error) {
         res.status(500).json(error.message);
     }
