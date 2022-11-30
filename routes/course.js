@@ -92,7 +92,7 @@ router.get("/image/:id_course", async (req, res) => {
     try {
         image_path = path.join(__dirname, "..", "uploads", "images_courses")
         console.log(image_path)
-        res.sendFile(path.join(image_path, req.params.id_course + ".png"));
+        res.sendFile(path.join(image_path, req.params.id_course));
     } catch (error) {
         res.status(500).json(error.message);
     }
