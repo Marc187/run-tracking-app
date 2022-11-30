@@ -15,9 +15,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 
 
 class RunImageRepository (private val application: Application){
@@ -26,18 +24,15 @@ class RunImageRepository (private val application: Application){
         @POST("course/image/{id_course}")
         suspend fun uploadFile(
                         @Path("id_course") id_course: Int,
-                        @Part("image_course") image_course: RequestBody):
+                        @Part image_course: MultipartBody.Part):
                         Response<ImagePostResponse>
 
     }
 
     fun uploadImage(id_course: Int, imageBitmap: Bitmap) {
-        // val converters = Converters()
-        // val imageUri = converters.getImageUri(application, imageBitmap)
-        // val file = File(imageUri)
 
         //create a file to write bitmap data
-        val f = File(application.cacheDir, "new_image")
+        val f = File(application.cacheDir, "image_course")
         f.createNewFile()
 
         val bos = ByteArrayOutputStream()
@@ -45,10 +40,19 @@ class RunImageRepository (private val application: Application){
         val bitmapdata: ByteArray = bos.toByteArray()
 
         //write the bytes in file
-        val fos = FileOutputStream(f)
-        fos.write(bitmapdata)
-        fos.flush()
-        fos.close()
+        var fos: FileOutputStream? = null
+        try {
+            fos = FileOutputStream(f)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        try {
+            fos!!.write(bitmapdata)
+            fos.flush()
+            fos.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
         // Creation de la requete avec les parametres
         val retrofit: Retrofit = Retrofit.Builder()
@@ -57,11 +61,13 @@ class RunImageRepository (private val application: Application){
             .build()
 
         val service: APIService = retrofit.create(APIService::class.java)
-        val mpBody: RequestBody = MultipartBody.create(MediaType.parse("image/*"), f)
+        //val mpBody: RequestBody = MultipartBody.create(MediaType.parse("image/*"), f)
 
+        val reqFile = RequestBody.create(MediaType.parse("image/*"), f)
+        val body = MultipartBody.Part.createFormData("image_course", f.name, reqFile)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.uploadFile(1, mpBody)
+            val response = service.uploadFile(id_course, body)
             println("MY RESPONSE: $response")
         }
     }

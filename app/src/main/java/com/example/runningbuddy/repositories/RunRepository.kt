@@ -42,6 +42,7 @@ class RunRepository (private val application: Application) {
                 // EnregistrerCourseFragment.id_course = it.getInt("id_course")
                 id_course.postValue(it.getInt("id_course"))
                 println(it.getInt("id_course"))
+
                 val imgRepo = RunImageRepository(application)
                 imgRepo.uploadImage(it.getInt("id_course"), image)
             },

@@ -45,7 +45,7 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
         }
 
         val imageView = holder.view.findViewById<ImageView>(R.id.imageMapCard)
-        Picasso.get().load("https://projet3-running-buddy.herokuapp.com/course/image/1").into(imageView)
+        Picasso.get().load("${MainActivity.SRVURL}/course/image/${course.id}").into(imageView)
 
         // Ajustement de couleur du bouton
         if (course.liked) {
