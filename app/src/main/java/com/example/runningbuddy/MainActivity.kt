@@ -3,6 +3,7 @@ package com.example.runningbuddy
 import android.content.Context
 import android.graphics.Color
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem

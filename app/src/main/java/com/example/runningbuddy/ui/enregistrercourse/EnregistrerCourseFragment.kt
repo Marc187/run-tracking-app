@@ -6,11 +6,11 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +26,6 @@ import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.MainActivity.Companion.userId
 import com.example.runningbuddy.R
 import com.example.runningbuddy.TrackingUtility
-import com.example.runningbuddy.databinding.ActivityMainBinding
 import com.example.runningbuddy.models.RunPost
 import com.example.runningbuddy.services.Polyline
 import com.example.runningbuddy.services.TrackingService
@@ -39,10 +38,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
 //import kotlinx.android.synthetic.main.fragment_enregistrer_course.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
@@ -65,6 +60,8 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     private var curTimeMillis = 0L
 
+    private lateinit var imgView: ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,10 +72,16 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        this.imgView = requireActivity().findViewById(R.id.imageTest)
         requestPermissions()
         enregistrerCourseViewModel =
             ViewModelProvider(this)[EnregistrerCourseViewModel::class.java]
+
+        this.imgView.setImageBitmap(enregistrerCourseViewModel.imgCourseTest.value)
+
+        enregistrerCourseViewModel.imgCourseTest.observe(viewLifecycleOwner) {
+            this.imgView.setImageBitmap(enregistrerCourseViewModel.imgCourseTest.value)
+        }
 
         val btnStartRun = requireView().findViewById<Button>(R.id.btnStartRun)
         val btnFinishRun = requireView().findViewById<Button>(R.id.btnFinishRun)
@@ -276,6 +279,10 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
 
             val runPost = RunPost(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
             if (bmp != null) {
+                println(this.imgView)
+                println(bmp)
+                enregistrerCourseViewModel.imgCourseTest.value = bmp
+                this.imgView.setImageBitmap(bmp)
                 enregistrerCourseViewModel.insertRun(runPost, bmp)
             }
 

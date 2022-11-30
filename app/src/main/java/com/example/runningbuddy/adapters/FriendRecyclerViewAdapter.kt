@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningbuddy.R
 import com.example.runningbuddy.models.User
@@ -29,9 +30,25 @@ class FriendRecyclerViewAdapter(private val listeUsers: MutableList<User>, priva
         // Informations de la course
         holder.view.findViewById<TextView>(R.id.tvNameCardFriend).text = user.nom
 
+        // Ajustement de couleur du bouton
+        if (user.subscribed) {
+            holder.view.findViewById<ImageButton>(R.id.btnSubscribeCard)
+                .setImageResource(R.drawable.ic_baseline_remove_24)
+        }
+
         // Click du bouton pour like un course
         holder.view.findViewById<ImageButton>(R.id.btnSubscribeCard).setOnClickListener{
-            TODO()
+            if (friendsViewModel.friends.value?.get(position)!!.subscribed) {
+                holder.view.findViewById<ImageButton>(R.id.btnSubscribeCard)
+                    .setImageResource(R.drawable.ic_baseline_add_24)
+            } else {
+                holder.view.findViewById<ImageButton>(R.id.btnSubscribeCard)
+                    .setImageResource(R.drawable.ic_baseline_remove_24)
+            }
+
+            friendsViewModel.updateSubscribe(position)
+
+            println("hello ${friendsViewModel.friends.value?.get(position)!!.subscribed}")
         }
     }
 
