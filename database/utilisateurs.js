@@ -9,6 +9,7 @@ function getUserById(id) {
 
 function getUserByName(name) {
     return knex('utilisateurs')
+        .select('id', 'nom_utilisateur', 'nom')
         .where('nom', 'like', `%${name}%`)
 }
 

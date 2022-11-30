@@ -8,14 +8,28 @@ function createUser(nom_utilisateur, nom, email, password) {
         .insert({ nom_utilisateur, nom, email, password }) 
 }
 
+function changePassword(id, password) {
+    return knex('utilisateurs')
+        .where('id', id)
+        .update('password', password)
+}
+
 function findUserByEmail (email) {
     return knex('utilisateurs')
         .where('email', email)
         .first()
 }
 
+function findUserById (id) {
+    return knex('utilisateurs')
+        .where('id', id)
+        .first()
+}
+
 
 module.exports = {
     createUser,
-    findUserByEmail
+    changePassword,
+    findUserByEmail,
+    findUserById
 };

@@ -19,6 +19,7 @@ const like = require('./routes/like');
 const abonnements = require('./routes/abonnements');
 const activity = require('./routes/activity')
 const users = require('./routes/users')
+const resetPassword = require('./routes/resetPassword')
 
 // Middlewares nécessaires à l'application
 app.use(cors());
@@ -36,6 +37,7 @@ app.use('/subscribtions', abonnements);
 app.use('/subscribe', abonnements);
 app.use('/activity', activity)
 app.use('/users', users)
+app.use('/resetPassword', resetPassword)
 
 // Route pour la documentation
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
