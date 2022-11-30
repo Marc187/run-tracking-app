@@ -23,6 +23,7 @@ const users = require('./routes/users')
 // Middlewares nécessaires à l'application
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname))
 
 // Routes
 app.use('/course', course);
