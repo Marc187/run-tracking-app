@@ -10,7 +10,7 @@ const userVerification = require('../middleware/user_verification')
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-    destination: './uploads/images_courses/',
+    destination: `${process.cwd()}/uploads/images_courses/`,
     filename: (req, file, cb) => {
         return cb(null, `${req.params.id_course}${path.extname(file.originalname)}`)
     }
@@ -90,6 +90,7 @@ router.delete('/:id_course', auth, async (req, res) => {
 router.get("/image/:id_course", async (req, res) => {
     try {
         image_path = path.join(__dirname, "..", "uploads", "images_courses")
+        console.log(image_path)
         res.sendFile(path.join(image_path, req.params.id_course + ".png"));
     } catch (error) {
         res.status(500).json(error.message);
