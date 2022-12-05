@@ -20,11 +20,12 @@ router.get('/:id_utilisateur', auth, userVerification, async (req, res) => {
         for (i = 0; i < activity.length; i++) {
             // Verifie si la course a deja ete aime
             const liked = await likesRequest.getLike(activity[i].id, id_utilisateur)
-            activity[i].liked = liked.length > 0 ? true : false
+            course_is_liked = liked.length > 0 ? true : false
+            activity[i].liked = course_is_liked
 
             // Ajoute le nombre de like au data
             const likes = await likesRequest.getLikes(activity[i].id)
-            activity[i].likes = likes.length
+            activity[i].likes =  course_is_liked ? likes.length - 1 : likes.length
         }
 
 
