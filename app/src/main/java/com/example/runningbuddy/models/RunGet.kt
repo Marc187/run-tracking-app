@@ -10,5 +10,6 @@ data class RunGet(
     var distanceInMeters: Float,
     var timeInMillis: Long,
     var caloriesBurned: Int,
-    var liked: Boolean
+    var liked: Boolean,
+    var likes: Int
 )

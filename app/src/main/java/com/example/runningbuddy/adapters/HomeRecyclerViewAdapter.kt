@@ -36,7 +36,9 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
         holder.view.findViewById<TextView>(R.id.tvNameCard).text = course.nom
         holder.view.findViewById<TextView>(R.id.tvDureeCard).text = "Durée: ${course.timeInMillis}"
         holder.view.findViewById<TextView>(R.id.tvDateCard).text = course.timeStamps
-        //holder.view.findViewById<ImageView>(R.id.imageMapCard).setImageBitmap(course.img.let { converters.toBitmap(it) })
+        holder.view.findViewById<TextView>(R.id.tvLikesCard).text = if (course.liked) "${course.likes + 1}" else "${course.likes}"
+
+        // Ajuste la distance a lunite de mesure choisie
         if(MainActivity.uniteMesure == "km"){
             holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "Distance: ${String.format("%.2f", (course.distanceInMeters/1000))} ${MainActivity.uniteMesure}"
         }
@@ -44,6 +46,7 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
             holder.view.findViewById<TextView>(R.id.tvDistanceCard).text = "Distance: ${String.format("%.2f", (course.distanceInMeters/1609))} ${MainActivity.uniteMesure}"
         }
 
+        // Affichage de l'image de la course
         val imageView = holder.view.findViewById<ImageView>(R.id.imageMapCard)
         Picasso.get().load("${MainActivity.SRVURL}/course/image/${course.id}").into(imageView)
 
@@ -54,16 +57,24 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
                 android.graphics.PorterDuff.Mode.MULTIPLY)
         }
 
-        // Click du bouton pour like un course
+        // Click du bouton pour like un course   0 |
         holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setOnClickListener{
             if (homeViewModel.courses.value?.get(position)!!.liked) {
+                // Met la couleur du like a gris
                 holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setColorFilter(
                     ContextCompat.getColor(holder.view.context, R.color.notLiked),
                     android.graphics.PorterDuff.Mode.MULTIPLY)
+
+                // Retire 1 du nombre de like affiche
+                holder.view.findViewById<TextView>(R.id.tvLikesCard).text = "${course.likes}"
             } else {
+                // Met la couleur du like a gris
                 holder.view.findViewById<ImageButton>(R.id.btnLikeCard).setColorFilter(
                     ContextCompat.getColor(holder.view.context, R.color.liked),
                     android.graphics.PorterDuff.Mode.MULTIPLY)
+
+                // Ajoute 1 au nombre de like affiche
+                holder.view.findViewById<TextView>(R.id.tvLikesCard).text = "${course.likes + 1}"
             }
             
             homeViewModel.updateLike(position)
