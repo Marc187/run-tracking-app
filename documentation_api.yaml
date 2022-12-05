@@ -96,6 +96,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
+
+  /resetPassword:
+    put:
+      tags:
+        - connexion
+      summary: Changement d'un mot de passe d'un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+              example:
+                oldPassword: e1234567
+                newPassword: e7654321
+      responses:
+        '201':
+          description: La réponse lorsque l'utilisateur le mot de passe est modifié.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+                
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
   /course/{id_course}:
     parameters:
     - in: path
@@ -241,6 +285,55 @@ paths:
                     type: string
                 example:
                   message: "Not found"
+
+  /statscourses/{id_utilisateur}:
+    parameters:
+    - in: path
+      name: id_utilisateur
+      schema:
+        type: integer
+      required: true
+      description: Id de l'utilisateur
+    get: 
+      summary: Renvoie les statistiques des courses d'un utilisateur
+      tags:
+        - course  
+      responses:
+        '201':
+          description: Renvoie toutes les statistiques des courses d'un utilisateur
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatsCourses'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'  
+        '404':
+          description: Aucune statistique de course n'a été trouvée.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Not found"
+
+
   /subscribe/{id_utilisateur_suivi}/{id_utilisateur_suivant}:
     parameters:
     - in: path
@@ -573,6 +666,35 @@ components:
         id_utilisateur: 1
         distance: 5.4
         duree: 25.30 min
+    StatsCourses:
+      type: object
+      required:
+        - id_utilisateur
+        - tottemps
+        - totdist
+        - totcalorie
+        - avgspeed
+        - mois
+      properties:
+        id_utilisateur:
+          type: integer
+        tottemps:
+          type: float
+        totdist:
+          type: float
+        totcalorie:
+          type: float
+        avgspeed:
+          type: float
+        mois:
+          type: string
+      example:
+        id_utilisateur: 5
+        tottemps: 13.34
+        totdist: 1520.34
+        totcalorie: 121.87
+        avgspeed: 15.85
+        mois: 2022-11
     Likes:
       type: object
       required:
