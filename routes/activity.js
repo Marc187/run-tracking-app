@@ -16,12 +16,18 @@ router.get('/:id_utilisateur', auth, userVerification, async (req, res) => {
 
         // Prends toutes les courses des utilisateurs triées par ordre chronologiques
         const activity = await activityRequest.getActivity(liste_abonnements)
-        
-        // Verifie si la course a deja ete aime
+
         for (i = 0; i < activity.length; i++) {
+            // Verifie si la course a deja ete aime
             const liked = await likesRequest.getLike(activity[i].id, id_utilisateur)
             activity[i].liked = liked.length > 0 ? true : false
+
+            // Ajoute le nombre de like au data
+            const likes = await likesRequest.getLikes(activity[i].id)
+            activity[i].likes = likes.length
         }
+
+
 
         res.status(200).json(activity)
     } catch (error) {
