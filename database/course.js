@@ -8,10 +8,10 @@ function getCourse(id) {
         .where('id', id)
 }
 
-function addCourse(id_utilisateur, img, timeStamps, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned) {
+function addCourse(id_utilisateur, timeStamps, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned) {
     return knex('courses')
         .returning('id')
-        .insert({ id_utilisateur, "img":knex.raw(`Convert(varbinary(max), '${img}')`), timeStamps, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned })
+        .insert({ id_utilisateur, timeStamps, avgSpeedInKMH, distanceInMeters, timeInMillis, caloriesBurned })
         
 }
 

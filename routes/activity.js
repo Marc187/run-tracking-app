@@ -6,10 +6,10 @@ const request = require('../database/abonnements')
 const activityRequest = require('../database/activity')
 const likesRequest = require('../database/likes')
 
-router.get('/:id_utilisateur', auth, userVerification, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         // Accede a la BD et retourne une liste contenant tous les abonnements de l'utilisateur
-        const id_utilisateur = req.params.id_utilisateur
+        const id_utilisateur = req.user.id
         const data_abonnements = await request.getSubscriptions(id_utilisateur)
         const liste_abonnements = data_abonnements.map(x => x.id_utilisateur_suivi)
         liste_abonnements.push(id_utilisateur)
@@ -27,8 +27,6 @@ router.get('/:id_utilisateur', auth, userVerification, async (req, res) => {
             const likes = await likesRequest.getLikes(activity[i].id)
             activity[i].likes =  course_is_liked ? likes.length - 1 : likes.length
         }
-
-
 
         res.status(200).json(activity)
     } catch (error) {

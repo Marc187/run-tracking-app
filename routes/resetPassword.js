@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const auth = require('../middleware/authentification')
 
-router.put('/', auth ,async (req, res) => {
+router.put('/', auth , async (req, res) => {
     try {
         const id = req.user.id;
         const oldPassword = req.body.oldpassword;
