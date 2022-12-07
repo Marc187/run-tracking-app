@@ -5,11 +5,11 @@ const userVerification = require('../middleware/user_verification')
 const usersRequest = require('../database/utilisateurs')
 const abonnementsRequest = require('../database/abonnements')
 
-router.get('/:id_user/:name', auth, async (req, res) => {
+router.get('/:id_utilisateur/:name', auth, userVerification, async (req, res) => {
     try {
         // Accede a la BD et retourne les utilisateurs selon le nom
         const name = req.params.name
-        const id_user = req.params.id_user
+        const id_user = req.params.id_utilisateur
         const users = await usersRequest.getUserByName(name)
 
         // Verifie si le user a deja ete abonne
