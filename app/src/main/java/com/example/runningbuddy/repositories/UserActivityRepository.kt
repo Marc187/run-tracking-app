@@ -10,11 +10,11 @@ import com.google.gson.Gson
 
 class UserActivityRepository (private val application: Application) {
 
-    fun getUserActivity(courses: MutableLiveData<MutableList<RunGet>>, userId: Int) {
+    fun getUserActivity(courses: MutableLiveData<MutableList<RunGet>>) {
         val queue = Volley.newRequestQueue(application)
         val r = object : StringRequest(
             Method.GET,
-            "${MainActivity.SRVURL}/activity/$userId",
+            "${MainActivity.SRVURL}/activity",
             {
                 val data = Gson().fromJson(it, Array<RunGet>::class.java)
                 courses.value = data.toMutableList()

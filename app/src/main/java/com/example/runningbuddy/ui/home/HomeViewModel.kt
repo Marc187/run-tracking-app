@@ -17,7 +17,7 @@ class HomeViewModel(val app: Application) : AndroidViewModel(app) {
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val userActivityRepository = UserActivityRepository(getApplication())
-            userActivityRepository.getUserActivity(courses, MainActivity.userId)
+            userActivityRepository.getUserActivity(courses)
         }
     }
 

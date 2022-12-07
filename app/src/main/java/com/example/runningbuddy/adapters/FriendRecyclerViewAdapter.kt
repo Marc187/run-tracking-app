@@ -47,8 +47,6 @@ class FriendRecyclerViewAdapter(private val listeUsers: MutableList<User>, priva
             }
 
             friendsViewModel.updateSubscribe(position)
-
-            println("hello ${friendsViewModel.friends.value?.get(position)!!.subscribed}")
         }
     }
 

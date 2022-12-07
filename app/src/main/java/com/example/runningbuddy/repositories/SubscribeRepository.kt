@@ -12,12 +12,12 @@ class SubscribeRepository (private val application: Application) {
         val queue = Volley.newRequestQueue(application)
         val r = object : StringRequest(
             Method.POST,
-            "${MainActivity.SRVURL}/subscribe/$userId/${MainActivity.userId}",
+            "${MainActivity.SRVURL}/subscribe/$userId",
             {
                 println(it)
             },
             {
-                println("ERREUR: /api/like")
+                println("ERREUR: /api/subscribe")
             }
         )
         {
@@ -35,12 +35,12 @@ class SubscribeRepository (private val application: Application) {
         val queue = Volley.newRequestQueue(application)
         val r = object : StringRequest(
             Method.DELETE,
-            "${MainActivity.SRVURL}/subscribe/$userId/${MainActivity.userId}",
+            "${MainActivity.SRVURL}/subscribe/$userId",
             {
                 println(it)
             },
             {
-                println("ERREUR: /api/like")
+                println("ERREUR: /api/subscribe")
             }
         )
         {

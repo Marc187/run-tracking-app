@@ -277,7 +277,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
             println(dateTimeStamp)
             val caloriesBurned = calculateCaloriesBurned()
 
-            val runPost = RunPost(userId, bmp, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
+            val runPost = RunPost(userId, dateTimeStamp, avgSpeed, distanceInMeters, curTimeMillis, caloriesBurned)
             if (bmp != null) {
                 println(this.imgView)
                 println(bmp)
