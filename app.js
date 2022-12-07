@@ -33,7 +33,6 @@ app.use('/statsCourses', statsCourses);
 app.use('/like', like);
 app.use('/login', login);
 app.use('/register', register);
-app.use('/subscribtions', abonnements);
 app.use('/subscribe', abonnements);
 app.use('/activity', activity)
 app.use('/users', users)
