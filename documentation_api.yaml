@@ -140,7 +140,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
 
-  /course/{id_course}:
+
+
     parameters:
     - in: path
       name: id_course
@@ -195,6 +196,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
   /course:
+    security:
+      - bearerAuth: []
     post:
       summary: Ajout d'une nouvelle course à un utilisateur
       tags:
@@ -207,19 +210,31 @@ paths:
               type: object
               required:
                 - id_utilisateur
-                - distance
-                - duree
+                - timeStamps
+                - avgSpeedInKMH
+                - distanceInMeters
+                - timeInMillis
+                - caloriesBurned
               properties:
                 id_utilisateur:
                   type: integer
-                distance:
-                  type: number
-                duree:
+                timeStamps:
                   type: string
+                avgSpeedInKMH:
+                  type: float
+                distanceInMeters:
+                  type: integer
+                timeInMillis:
+                  type: integer
+                caloriesBurned:
+                  type: integer
               example:
                 id_utilisateur: 1
-                distance: 5.4
-                duree: 25.30 min
+                timeStamps: '2021-11-01'
+                avgSpeedInKMH: 15.85
+                distanceInMeters: 1520
+                timeInMillis: 1334
+                caloriesBurned: 121
       responses:
         '201':
           description: Succès lors de de l'ajout
@@ -239,27 +254,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
-  /courses/{id_utilisateur}:
-    parameters:
-    - in: path
-      name: id_utilisateur
-      schema:
-        type: integer
-      required: true
-      description: Id de l'utilisateur
-    get: 
-      summary: Renvoie toutes les courses d'un utilisateur
+  /course/image/{id_course}:
+    get:
+      summary: Retourne l'image d'une course
       tags:
-        - course  
+        - course
+      parameters:
+      - in: path
+        name: id_course
+        schema:
+          type: integer
+        required: true
+        description: Id de la course
       responses:
         '201':
-          description: Renvoie toutes les courses d'un utilisateur
+          description: Réponse de succès.
           content:
-            application/json:
+            image/png:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Courses'
+                type: string
+                format: binary
         '400':
           description: Réponse lorsqu'une erreur s'est produite.
           content:
@@ -271,20 +285,82 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QuatreCentUn'  
-        '404':
-          description: Aucune course n'a été trouvée.
+                $ref: '#/components/schemas/QuatreCentUn'
+    post:
+      security:
+        - bearerAuth: []
+      summary: Ajout d'une image à une course
+      tags:
+        - course
+      parameters:
+        - in: path
+          name: id_course
+          schema:
+            type: integer
+          required: true
+          description: Id de la course
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Réponse de succès.
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - message
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Not found"
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
+      
+        
+
+  /activity:
+    security:
+      - bearerAuth: []
+    get: 
+      summary: Renvoie toutes les courses d'un utilisateur et de ces abonnements
+      tags:
+        - course  
+      responses:
+        '201':
+          description: Renvoie toutes les courses d'un utilisateur et de ces abonnements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
 
   /statscourses/{id_utilisateur}:
     parameters:
@@ -333,8 +409,7 @@ paths:
                 example:
                   message: "Not found"
 
-
-  /subscribe/{id_utilisateur_suivi}/{id_utilisateur_suivant}:
+  /subscribe/{id_utilisateur_suivi}:
     parameters:
     - in: path
       name: id_utilisateur_suivi
@@ -342,13 +417,9 @@ paths:
         type: string
       required: true
       description: Id de l'utilisateur suivi
-    - in: path
-      name: id_utilisateur_suivant
-      schema:
-        type: string
-      required: true
-      description: Id de l'utilisateur suivant
     post:
+      security:
+        - bearerAuth: []
       tags:
         - abonnements
       summary: Abonne un utilisateur à un autre utilisateur
@@ -394,7 +465,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
-  /subscribtions/{id_utilisateur}:
+
     parameters:
     - in: path
       name: id_utilisateur
@@ -441,6 +512,7 @@ paths:
                     type: string
                 example:
                   message: "Not found"
+  
   /trajet/{id_course}:
     parameters:
     - in: path
@@ -527,6 +599,7 @@ paths:
                     type: string
                 example:
                   message: "Not found"
+  
   /like/{id_course}/{id_utilisateur}:
     parameters:
     - in: path
@@ -617,6 +690,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
+
 components:
   securitySchemes:
      bearerAuth:            
@@ -645,27 +719,39 @@ components:
         nom: John Doe
         email: e1234567@site.com
         password: e1234567
-    Courses:
+    Course:
       type: object
       required:
         - id
         - id_utilisateur
-        - distance
-        - duree
+        - timeStamps
+        - avgSpeedInKMH
+        - distanceInMeters
+        - timeInMillis
+        - caloriesBurned
       properties:
         id:
           type: integer
         id_utilisateur:
           type: integer
-        distance:
-          type: number
-        duree:
+        timeStamps:
           type: string
+        avgSpeedInKMH:
+          type: float
+        distanceInMeters:
+          type: integer
+        timeInMillis:
+          type: integer
+        caloriesBurned:
+          type: integer
       example:
         id: 1
         id_utilisateur: 1
-        distance: 5.4
-        duree: 25.30 min
+        timeStamps: '2021-11-01'
+        avgSpeedInKMH: 15.85
+        distanceInMeters: 1520
+        timeInMillis: 1334
+        caloriesBurned: 121
     StatsCourses:
       type: object
       required:
@@ -695,19 +781,6 @@ components:
         totcalorie: 121.87
         avgspeed: 15.85
         mois: 2022-11
-    Likes:
-      type: object
-      required:
-        - id_course
-        - id_utilisateur
-      properties:
-        id_course:
-          type: integer
-        id_utilisateur:
-          type: integer
-      example:
-        id_course: 123
-        id_utilisateur: 11
     Abonnement:
       type: object
       required:

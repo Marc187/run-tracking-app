@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/authentification')
 const userVerification = require('../middleware/user_verification')
-const usersRequest = require('../database/utilisateurs')
+const usersRequest = require('../database/users')
 const abonnementsRequest = require('../database/abonnements')
 
 router.get('/:id_utilisateur/:name', auth, userVerification, async (req, res) => {

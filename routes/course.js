@@ -1,6 +1,6 @@
 const express = require('express');
 const request = require('../database/course.js');
-const requestUser = require('../database/utilisateurs.js');
+const requestUser = require('../database/users.js');
 const router = express.Router();
 const path = require('path');
 const auth = require('../middleware/authentification')

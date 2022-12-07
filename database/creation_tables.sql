@@ -34,7 +34,6 @@ CREATE TABLE courses (
 	id_utilisateur INT 
 		FOREIGN KEY REFERENCES utilisateurs(id),
 		-- ON DELETE CASCADE,
-	img varbinary(max),
     timeStamps VARCHAR(255),
     avgSpeedInKMH Float,
     distanceInMeters Int,
@@ -77,18 +76,18 @@ INSERT INTO abonnements VALUES
 GO
 
 INSERT INTO courses VALUES
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-9-10', 5.8, 170, 5866664, 123),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-9-5', 5.8, 75, 1766665, 65),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-9-18', 5.8, 16, 946561, 53),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-10-21', 5.8, 380, 6680664, 123),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-10-18', 5.8, 83, 16665, 65),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-10-28', 5.8, 184, 966651, 53),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-11-10', 5.8, 568, 8666675, 123),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-11-5', 5.8, 185, 156617, 65),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-11-18', 5.8, 12, 1066678, 53),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-12-21', 5.8, 601, 156661, 123),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-12-18', 5.8, 157, 5086665, 65),
-	(5, Convert(varbinary(max), '[B@2412dde'), '2022-12-28', 5.8, 105, 1966675, 53)
+	(5, '2022-9-10', 5.8, 170, 5866664, 123),
+	(5, '2022-9-5', 5.8, 75, 1766665, 65),
+	(5, '2022-9-18', 5.8, 16, 946561, 53),
+	(5, '2022-10-21', 5.8, 380, 6680664, 123),
+	(5, '2022-10-18', 5.8, 83, 16665, 65),
+	(5, '2022-10-28', 5.8, 184, 966651, 53),
+	(5, '2022-11-10', 5.8, 568, 8666675, 123),
+	(5, '2022-11-5', 5.8, 185, 156617, 65),
+	(5, '2022-11-18', 5.8, 12, 1066678, 53),
+	(5, '2022-12-21', 5.8, 601, 156661, 123),
+	(5, '2022-12-18', 5.8, 157, 5086665, 65),
+	(5, '2022-12-28', 5.8, 105, 1966675, 53)
 GO
 
 INSERT INTO likes VALUES
