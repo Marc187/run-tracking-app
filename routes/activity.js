@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/authentification')
-const userVerification = require('../middleware/user_verification')
 const request = require('../database/abonnements')
 const activityRequest = require('../database/activity')
 const likesRequest = require('../database/likes')
