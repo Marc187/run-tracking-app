@@ -7,7 +7,7 @@ function getActivity(liste_abonnements) {
         .select('courses.id', 'id_utilisateur', 'nom', "avgSpeedInKMH", "distanceInMeters", "timeInMillis", "caloriesBurned", "timeStamps")
         .join('utilisateurs', 'courses.id_utilisateur', 'utilisateurs.id')
         .whereIn('courses.id_utilisateur', liste_abonnements)
-        .orderBy('timeStamps')
+        .orderBy('timeStamps', 'desc')
 }
 
 module.exports = {
