@@ -306,7 +306,7 @@ paths:
             schema:
               type: object
               properties:
-                image:
+                image_course:
                   type: string
                   format: binary
       responses:
@@ -328,9 +328,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
-
-      
-        
 
   /activity:
     security:
@@ -360,7 +357,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuatreCentUn'
-
 
   /statscourses/{id_utilisateur}:
     parameters:
@@ -512,94 +508,7 @@ paths:
                     type: string
                 example:
                   message: "Not found"
-  
-  /trajet/{id_course}:
-    parameters:
-    - in: path
-      name: id_course
-      schema:
-        type: integer
-      required: true
-      description: Id de la course
-    get:
-      summary: Renvoie le fichier GPX d’une course 
-      tags:
-      - course
-      responses:
-        '201':
-          description: Renvoie le fichier GPX d’une course 
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  example: nom_utilisateur1
-        '400':
-          description: Réponse lorsqu'une erreur s'est produite.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        '401':
-          description: Non autorisé.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/QuatreCentUn'  
-        '404':
-          description: Fichier GPX introuvable.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - message
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Not found"
-    post:
-      summary: Ajoute le fichier GPX associé à une course
-      tags:
-      - course
-      responses:
-        '201':
-          description: Le fichier GPX a bien été ajouté. 
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  example: nom_utilisateur1
-        '400':
-          description: Réponse lorsqu'une erreur s'est produite.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        '401':
-          description: Non autorisé.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/QuatreCentUn'  
-        '404':
-          description: Fichier GPX introuvable.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - message
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Not found"
-  
+ 
   /like/{id_course}/{id_utilisateur}:
     parameters:
     - in: path
