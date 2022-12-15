@@ -98,8 +98,6 @@ class ProfileFragment : Fragment() {
             val yValueGroup1 = ArrayList<BarEntry>()
             val yValueGroup2 = ArrayList<BarEntry>()
 
-            val barDataSet1: BarDataSet
-
             // Enlever les légendes
             val legend = barChartView.legend
             val legenedEntries = arrayListOf<LegendEntry>()
@@ -159,12 +157,12 @@ class ProfileFragment : Fragment() {
             }
 
             //Settings du graphique
-            barDataSet1 = BarDataSet(yValueGroup1, "")
+            val barDataSet1 = BarDataSet(yValueGroup1, "")
             barDataSet1.setDrawIcons(false)
             barDataSet1.setDrawValues(false)
             barDataSet1.setColors(Color.parseColor("#1F7DC8"))
 
-            val barDataSet2: BarDataSet = BarDataSet(yValueGroup2, "")
+            val barDataSet2 = BarDataSet(yValueGroup2, "")
 
             barDataSet2.setDrawIcons(false)
             barDataSet2.setDrawValues(false)

@@ -122,10 +122,10 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if(!isTracking && curTimeMillis > 0L) {
-            requireView().findViewById<Button>(R.id.btnStartRun).text = "Start"
+            requireView().findViewById<Button>(R.id.btnStartRun).text = "Commencer"
             requireView().findViewById<Button>(R.id.btnFinishRun).visibility = View.VISIBLE
         } else if(isTracking) {
-            requireView().findViewById<Button>(R.id.btnStartRun).text = "Stop"
+            requireView().findViewById<Button>(R.id.btnStartRun).text = "Pause"
             requireView().findViewById<Button>(R.id.btnFinishRun).visibility = View.GONE
         }
     }

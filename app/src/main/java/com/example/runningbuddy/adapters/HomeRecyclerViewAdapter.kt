@@ -31,7 +31,8 @@ class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, pri
 
         // Informations de la course
         holder.view.findViewById<TextView>(R.id.tvNameCard).text = course.nom
-        holder.view.findViewById<TextView>(R.id.tvDureeCard).text = "Durée: ${course.timeInMillis}"
+        val time = course.timeInMillis / 60000
+        holder.view.findViewById<TextView>(R.id.tvDureeCard).text = "Durée: $time min"
         holder.view.findViewById<TextView>(R.id.tvDateCard).text = course.timeStamps
         holder.view.findViewById<TextView>(R.id.tvLikesCard).text = if (course.liked) "${course.likes + 1}" else "${course.likes}"
 

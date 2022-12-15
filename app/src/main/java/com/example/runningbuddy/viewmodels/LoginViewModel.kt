@@ -8,8 +8,8 @@ import com.example.runningbuddy.repositories.LoginRepository
 class LoginViewModel (application: Application) : AndroidViewModel(application) {
 
     private var loginRepository: LoginRepository = LoginRepository(application)
-    var email = "e1234567@site.com"
-    var password = "e1234567"
+    var email = ""
+    var password = ""
 
     fun postUser(){
         loginRepository.postUser(email, password)
