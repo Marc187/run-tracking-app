@@ -1,21 +1,14 @@
 package com.example.runningbuddy
 
 import android.content.Context
-import android.graphics.Color
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.example.runningbuddy.ui.settings.SettingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -36,14 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         this.navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         this.navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_enregistrercourse,
-                R.id.navigation_profile
-            )
-        )
-        //this.setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView: BottomNavigationView = this.findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)

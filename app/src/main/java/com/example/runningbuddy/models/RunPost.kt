@@ -1,7 +1,5 @@
 package com.example.runningbuddy.models
 
-import android.graphics.Bitmap
-
 data class RunPost (
     var id_utilisateur: Int,
     var timeStamps: String,

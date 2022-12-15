@@ -6,18 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.runningbuddy.MainActivity
-import com.example.runningbuddy.converters.Converters
 import com.example.runningbuddy.models.RunPost
-import com.example.runningbuddy.ui.enregistrercourse.EnregistrerCourseFragment
 import org.json.JSONException
 import org.json.JSONObject
 
 
 class RunRepository (private val application: Application) {
-    private var converters: Converters = Converters()
 
     fun insertRun(runPost: RunPost, id_course: MutableLiveData<Int>, image: Bitmap) {
-
 
         val queue = Volley.newRequestQueue(application)
         val runObject = JSONObject()

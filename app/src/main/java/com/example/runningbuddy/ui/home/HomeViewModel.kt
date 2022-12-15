@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.models.RunGet
 import com.example.runningbuddy.repositories.LikeRepository
 import com.example.runningbuddy.repositories.UserActivityRepository

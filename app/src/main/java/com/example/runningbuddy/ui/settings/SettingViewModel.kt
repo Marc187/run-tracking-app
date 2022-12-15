@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.runningbuddy.repositories.SettingRepository
 
-@Suppress("RedundantVisibilityModifier")
+
 class SettingViewModel (application: Application) : AndroidViewModel(application) {
 
     private var settingRepository: SettingRepository = SettingRepository(application)

@@ -100,7 +100,7 @@ class TrackingService : LifecycleService() {
                         startForegroundService()
                         isFirstRun = false
                     } else {
-                        println("Resuming service...")
+                        // le if et else est la pour savoir si on start ou on résume
                         startTimer()
                     }
                 }

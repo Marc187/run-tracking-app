@@ -9,6 +9,7 @@ import com.example.runningbuddy.models.User
 import com.google.gson.Gson
 
 class UsersFriendRepository (private val application: Application) {
+
     fun getUsersByName(users: MutableLiveData<MutableList<User>>, userId: Int, name: String) {
         val queue = Volley.newRequestQueue(application)
         val r = object : StringRequest(

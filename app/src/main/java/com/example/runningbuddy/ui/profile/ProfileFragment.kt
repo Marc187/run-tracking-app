@@ -31,9 +31,6 @@ import java.util.*
 class ProfileFragment : Fragment() {
 
     lateinit var barChartView: BarChart
-    lateinit var barData: BarData
-    lateinit var barDataSet: BarDataSet
-    lateinit var barEntriesList: ArrayList<BarEntry>
     private lateinit var profilViewModel: ProfileViewModel
 
     override fun onCreateView(
@@ -44,11 +41,9 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    @SuppressLint("Range")
+    @SuppressLint("Range", "SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
         requireActivity().actionBar?.title = "Profil"
 
         profilViewModel =
@@ -64,10 +59,10 @@ class ProfileFragment : Fragment() {
             //Set couleur graphique blanc si dark mode
             when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
                 Configuration.UI_MODE_NIGHT_YES -> {
-                    barChartView.getAxisLeft().setTextColor(getResources().getColor(R.color.white));
-                    barChartView.getAxisLeft().setAxisLineColor(getResources().getColor(R.color.white));
-                    barChartView.getXAxis().setTextColor(getResources().getColor(R.color.white));
-                    barChartView.getXAxis().setAxisLineColor(getResources().getColor(R.color.white));
+                    barChartView.axisLeft.textColor = resources.getColor(R.color.white);
+                    barChartView.axisLeft.axisLineColor = resources.getColor(R.color.white);
+                    barChartView.xAxis.textColor = resources.getColor(R.color.white);
+                    barChartView.xAxis.axisLineColor = resources.getColor(R.color.white);
                     coureur.setColorFilter(
                         ContextCompat.getColor(requireContext(), android.R.color.white),
                         PorterDuff.Mode.MULTIPLY);
@@ -79,15 +74,9 @@ class ProfileFragment : Fragment() {
             view.findViewById<TextView>(R.id.uniteVitesse).text = MainActivity.uniteMesure
 
 
-
-            val barWidth: Float
-            val barSpace: Float
-            val groupSpace: Float
-            val groupCount = 12
-
-            barWidth = 0.35f
-            barSpace = 0.07f
-            groupSpace = 0.17f
+            val barWidth: Float = 0.35f
+            val barSpace: Float = 0.07f
+            val groupSpace: Float = 0.17f
 
             val xAxisValues = ArrayList<String>()
             xAxisValues.add("Jan")
@@ -107,8 +96,6 @@ class ProfileFragment : Fragment() {
             val yValueGroup2 = ArrayList<BarEntry>()
 
             // draw the graph
-            val barDataSet1: BarDataSet
-            val barDataSet2: BarDataSet
 
             // Enlever les légendes
             val legend = barChartView.legend
@@ -120,15 +107,12 @@ class ProfileFragment : Fragment() {
 
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
             val currentMonth = sdf.format(Date()).substring(3,5).toFloat()
-            println(" C Month is  "+currentMonth)
 
             for(i in 1..12){
                 var found = false
                 for(month in it){
-                    println(month)
                     val monthNumber = month.mois.split("-").toTypedArray()[1].toFloat()
                     if(i.toFloat() == monthNumber){
-                        println(month.totdist)
                         if(MainActivity.uniteMesure == "km") {
                             yValueGroup1.add(BarEntry(monthNumber, month.totdist/1000))
                             yValueGroup2.add(BarEntry(monthNumber, floatArrayOf(0.toFloat())))
@@ -168,41 +152,41 @@ class ProfileFragment : Fragment() {
                 }
             }
 
-            barDataSet1 = BarDataSet(yValueGroup1, "")
+            val barDataSet1: BarDataSet = BarDataSet(yValueGroup1, "")
             barDataSet1.setDrawIcons(false)
             barDataSet1.setDrawValues(false)
             barDataSet1.setColors(Color.parseColor("#1F7DC8"))
 
-            barDataSet2 = BarDataSet(yValueGroup2, "")
+            val barDataSet2: BarDataSet = BarDataSet(yValueGroup2, "")
 
             barDataSet2.setDrawIcons(false)
             barDataSet2.setDrawValues(false)
 
-            var barData = BarData(barDataSet1, barDataSet2)
+            val barData = BarData(barDataSet1, barDataSet2)
 
             barChartView.description.isEnabled = false
             barChartView.description.textSize = 0f
             barData.setValueFormatter(LargeValueFormatter())
-            barChartView.setData(barData)
-            barChartView.getBarData().setBarWidth(barWidth)
-            barChartView.getXAxis().setAxisMinimum(0f)
-            barChartView.getXAxis().setAxisMaximum(12f)
+            barChartView.data = barData
+            barChartView.barData.barWidth = barWidth
+            barChartView.xAxis.axisMinimum = 0f
+            barChartView.xAxis.axisMaximum = 12f
             barChartView.groupBars(0f, groupSpace, barSpace)
             //   barChartView.setFitBars(true)
-            barChartView.getData().setHighlightEnabled(false)
+            barChartView.data.isHighlightEnabled = false
             barChartView.invalidate()
 
-            val xAxis = barChartView.getXAxis()
-            xAxis.setGranularity(1f)
-            xAxis.setGranularityEnabled(true)
+            val xAxis = barChartView.xAxis
+            xAxis.granularity = 1f
+            xAxis.isGranularityEnabled = true
             xAxis.setCenterAxisLabels(true)
             xAxis.setDrawGridLines(false)
             xAxis.textSize = 13f
 
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
-            xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
-            xAxis.setLabelCount(12)
+            xAxis.labelCount = 12
             xAxis.mAxisMaximum = 12f
             xAxis.setCenterAxisLabels(true)
             xAxis.setAvoidFirstLastClipping(true)
@@ -211,69 +195,23 @@ class ProfileFragment : Fragment() {
 
             barChartView.setVisibleXRangeMaximum(12f)
             barChartView.setVisibleXRangeMinimum(12f)
-            barChartView.setDragEnabled(true)
+            barChartView.isDragEnabled = true
 
             //Y-axis
-            barChartView.getAxisRight().setEnabled(false)
+            barChartView.axisRight.isEnabled = false
             barChartView.setScaleEnabled(true)
 
-            val leftAxis = barChartView.getAxisLeft()
-            leftAxis.setValueFormatter(LargeValueFormatter())
+            val leftAxis = barChartView.axisLeft
+            leftAxis.valueFormatter = LargeValueFormatter()
             leftAxis.setDrawGridLines(false)
-            leftAxis.setSpaceTop(1f)
-            leftAxis.setAxisMinimum(0f)
+            leftAxis.spaceTop = 1f
+            leftAxis.axisMinimum = 0f
             leftAxis.textSize = 13f
 
 
             barChartView.data = barData
             barChartView.setVisibleXRange(1f, 12f)
         }
-
-
-
-
-
-//        yValueGroup1.add(BarEntry(1f, floatArrayOf()))
-//        yValueGroup2.add(BarEntry(1f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(2f, floatArrayOf(3.toFloat())))
-//        yValueGroup2.add(BarEntry(2f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(3f, floatArrayOf(3.toFloat())))
-//        yValueGroup2.add(BarEntry(3f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(4f, floatArrayOf(3.toFloat())))
-//        yValueGroup2.add(BarEntry(4f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(5f, floatArrayOf(9.toFloat())))
-//        yValueGroup2.add(BarEntry(5f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(6f, floatArrayOf(24.toFloat())))
-//        yValueGroup2.add(BarEntry(6f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(7f, floatArrayOf(11.toFloat())))
-//        yValueGroup2.add(BarEntry(7f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(8f, floatArrayOf(11.toFloat())))
-//        yValueGroup2.add(BarEntry(8f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(9f, floatArrayOf(11.toFloat())))
-//        yValueGroup2.add(BarEntry(9f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(10f, floatArrayOf(11.toFloat())))
-//        yValueGroup2.add(BarEntry(10f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(11f, floatArrayOf(11.toFloat())))
-//        yValueGroup2.add(BarEntry(11f, floatArrayOf(0.toFloat())))
-//
-//        yValueGroup1.add(BarEntry(12f, floatArrayOf(11.toFloat())))
-//        yValueGroup2.add(BarEntry(12f, floatArrayOf(0.toFloat())))
-
-
-
-
-
-
 
     }
 

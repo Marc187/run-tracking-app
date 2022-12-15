@@ -92,7 +92,10 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
 
         btnFinishRun.setOnClickListener {
-            zoomToSeeWholeTrack()
+            // si l'utilisateur n'a pas bouger il ne dézoom pas
+            if (pathPoints.last().size >= 2) {
+                zoomToSeeWholeTrack()
+            }
             endRunAndSaveToDb()
         }
 
@@ -155,7 +158,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
 
         // Creation objet et POST les donnees de la course
-        enregistrerCourseViewModel.id_course.observe(viewLifecycleOwner) {
+        enregistrerCourseViewModel.idCourse.observe(viewLifecycleOwner) {
             println("id observer: $it")
         }
     }
@@ -286,7 +289,7 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
                 enregistrerCourseViewModel.insertRun(runPost, bmp)
             }
 
-            println("Main course print: ${enregistrerCourseViewModel.id_course.value}")
+            println("Main course print: ${enregistrerCourseViewModel.idCourse.value}")
 
 
             // Arrete le trajet
@@ -310,23 +313,6 @@ class EnregistrerCourseFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
-
-
-    // TODO : pt enelever cet fonction la
-    /** rajoute le dernier polyline (FONCTIONNE PAS!!!)
-    private fun addLatestPolyline() {
-        if(pathPoints.isEmpty() && pathPoints.last().size > 1) {
-            val preLastLatLng = pathPoints.last()[pathPoints.last().size - 2]
-            val lastLatLng = pathPoints.last().last()
-            val polylineOptions = PolylineOptions()
-                .color(POLYLINE_COLOR)
-                .width(POLYLINE_WIDTH)
-                .add(preLastLatLng)
-                .add(lastLatLng)
-            map?.addPolyline(polylineOptions)
-        }
-    }
-    **/
 
 
 

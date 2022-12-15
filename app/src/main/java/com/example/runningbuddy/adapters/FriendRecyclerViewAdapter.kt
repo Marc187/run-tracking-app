@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningbuddy.R
 import com.example.runningbuddy.models.User
@@ -27,10 +26,9 @@ class FriendRecyclerViewAdapter(private val listeUsers: MutableList<User>, priva
     override fun onBindViewHolder(holder: RecyclerViewViewHolder, position: Int) {
         val user = this.listeUsers[position]
 
-        // Informations de la course
         holder.view.findViewById<TextView>(R.id.tvNameCardFriend).text = user.nom
 
-        // Ajustement de couleur du bouton
+        // Si le user est subscribed on change pour un - a la place d'un +
         if (user.subscribed) {
             holder.view.findViewById<ImageButton>(R.id.btnSubscribeCard)
                 .setImageResource(R.drawable.ic_baseline_remove_24)

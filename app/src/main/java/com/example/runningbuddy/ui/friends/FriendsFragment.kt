@@ -41,7 +41,7 @@ class FriendsFragment : Fragment() {
         }
 
 
-        // RecyclerView des courses
+        // RecyclerView des users sur le site
         this.rvFriends = requireView().findViewById(R.id.rvFriends)
         this.rvFriends.layoutManager = LinearLayoutManager(context)
 

@@ -11,17 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningbuddy.MainActivity
 import com.example.runningbuddy.R
-import com.example.runningbuddy.converters.Converters
 import com.example.runningbuddy.models.RunGet
 import com.example.runningbuddy.ui.home.HomeViewModel
 import com.squareup.picasso.Picasso
-import java.math.BigInteger
 
 class HomeRecyclerViewAdapter(private val listeCourses: MutableList<RunGet>, private val homeViewModel: HomeViewModel) :
     RecyclerView.Adapter<HomeRecyclerViewAdapter.RecyclerViewViewHolder>() {
 
     class RecyclerViewViewHolder(val view: View) : RecyclerView.ViewHolder(view)
-    private var converters: Converters = Converters()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_course_item, parent, false) as View

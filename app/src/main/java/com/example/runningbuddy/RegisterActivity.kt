@@ -10,8 +10,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import com.example.runningbuddy.databinding.RegisterBinding
-import com.example.runningbuddy.repositories.RegisterRepository
 import com.example.runningbuddy.viewmodels.RegisterViewModel
 
 
@@ -58,7 +56,7 @@ class RegisterActivity : AppCompatActivity() {
         this.startActivity(i)
     }
 
-    fun checkInput() {
+    private fun checkInput() {
         val email = this.findViewById<EditText>(R.id.emailRegister)
         val password = this.findViewById<EditText>(R.id.passwordRegister)
         val name = this.findViewById<EditText>(R.id.prenomNomRegister)

@@ -7,7 +7,6 @@ import com.example.runningbuddy.MainActivity
 
 class SubscribeRepository (private val application: Application) {
 
-
     fun addSubscribe(userId: Int) {
         val queue = Volley.newRequestQueue(application)
         val r = object : StringRequest(

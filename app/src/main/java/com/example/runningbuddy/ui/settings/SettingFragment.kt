@@ -1,5 +1,6 @@
 package com.example.runningbuddy.ui.settings
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -30,6 +31,7 @@ class SettingFragment : Fragment() {
         return inflater.inflate(R.layout.settings, container, false)
     }
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val settingViewModel =
@@ -70,17 +72,13 @@ class SettingFragment : Fragment() {
         val sharedPreference =  this.requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val switchTheme: Boolean = sharedPreference.getBoolean("switchTheme", false)
         val uniteMesure: String? = sharedPreference.getString("uniteMesure", "km")
-        var editor = sharedPreference.edit()
+        val editor = sharedPreference.edit()
 
         //Set les settings déjà sauvegardé
-        if(switchTheme){
-            switchBtn.setChecked(true)
-        }else{
-            switchBtn.setChecked(false)
-        }
+        switchBtn.isChecked = switchTheme
 
         spinner.setSelection(
-            (spinner.getAdapter() as ArrayAdapter<String?>).getPosition(
+            (spinner.adapter as ArrayAdapter<String?>).getPosition(
                 uniteMesure
             )
         )
