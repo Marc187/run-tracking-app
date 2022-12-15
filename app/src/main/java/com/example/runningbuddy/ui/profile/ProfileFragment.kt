@@ -77,15 +77,8 @@ class ProfileFragment : Fragment() {
             val barWidth: Float = 0.35f
             val barSpace: Float = 0.07f
             val groupSpace: Float = 0.17f
-
-            val barWidth: Float
-            val barSpace: Float
-            val groupSpace: Float
             val groupCount = 12
 
-            barWidth = 0.35f
-            barSpace = 0.07f
-            groupSpace = 0.17f
 
             //Set les mois pour le graphique
             val xAxisValues = ArrayList<String>()
@@ -105,9 +98,7 @@ class ProfileFragment : Fragment() {
             val yValueGroup1 = ArrayList<BarEntry>()
             val yValueGroup2 = ArrayList<BarEntry>()
 
-            // Dessine le graphique
             val barDataSet1: BarDataSet
-            val barDataSet2: BarDataSet
 
             // Enlever les légendes
             val legend = barChartView.legend
