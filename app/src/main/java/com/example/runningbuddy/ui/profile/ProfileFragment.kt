@@ -56,7 +56,7 @@ class ProfileFragment : Fragment() {
             barChartView  = view.findViewById(R.id.idBarChart)
             val coureur = view.findViewById<ImageView>(R.id.imageCourse)
 
-            //Set couleur graphique blanc si dark mode
+            //Set couleur graphique blanc si dark mode est activé
             when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
                 Configuration.UI_MODE_NIGHT_YES -> {
                     barChartView.axisLeft.textColor = resources.getColor(R.color.white);
@@ -78,6 +78,16 @@ class ProfileFragment : Fragment() {
             val barSpace: Float = 0.07f
             val groupSpace: Float = 0.17f
 
+            val barWidth: Float
+            val barSpace: Float
+            val groupSpace: Float
+            val groupCount = 12
+
+            barWidth = 0.35f
+            barSpace = 0.07f
+            groupSpace = 0.17f
+
+            //Set les mois pour le graphique
             val xAxisValues = ArrayList<String>()
             xAxisValues.add("Jan")
             xAxisValues.add("Feb")
@@ -95,7 +105,9 @@ class ProfileFragment : Fragment() {
             val yValueGroup1 = ArrayList<BarEntry>()
             val yValueGroup2 = ArrayList<BarEntry>()
 
-            // draw the graph
+            // Dessine le graphique
+            val barDataSet1: BarDataSet
+            val barDataSet2: BarDataSet
 
             // Enlever les légendes
             val legend = barChartView.legend
@@ -104,15 +116,17 @@ class ProfileFragment : Fragment() {
             legenedEntries.add(LegendEntry("", Legend.LegendForm.SQUARE, 8f, 8f, null, Color.WHITE))
             legend.setCustom(legenedEntries)
 
-
+            //Format la date
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
             val currentMonth = sdf.format(Date()).substring(3,5).toFloat()
 
+            //Boucle a travers les mois et set les données
             for(i in 1..12){
                 var found = false
                 for(month in it){
                     val monthNumber = month.mois.split("-").toTypedArray()[1].toFloat()
                     if(i.toFloat() == monthNumber){
+                        //Changer les données en fonction de l'unité de mesure
                         if(MainActivity.uniteMesure == "km") {
                             yValueGroup1.add(BarEntry(monthNumber, month.totdist/1000))
                             yValueGroup2.add(BarEntry(monthNumber, floatArrayOf(0.toFloat())))
@@ -146,13 +160,15 @@ class ProfileFragment : Fragment() {
                     }
 
                 }
+                //Si aucune donnée pour un mois
                 if(!found){
                     yValueGroup1.add(BarEntry(i.toFloat(), 0f))
                     yValueGroup2.add(BarEntry(i.toFloat(), floatArrayOf(0.toFloat())))
                 }
             }
 
-            val barDataSet1: BarDataSet = BarDataSet(yValueGroup1, "")
+            //Settings du graphique
+            barDataSet1 = BarDataSet(yValueGroup1, "")
             barDataSet1.setDrawIcons(false)
             barDataSet1.setDrawValues(false)
             barDataSet1.setColors(Color.parseColor("#1F7DC8"))
@@ -172,8 +188,7 @@ class ProfileFragment : Fragment() {
             barChartView.xAxis.axisMinimum = 0f
             barChartView.xAxis.axisMaximum = 12f
             barChartView.groupBars(0f, groupSpace, barSpace)
-            //   barChartView.setFitBars(true)
-            barChartView.data.isHighlightEnabled = false
+            barChartView.getData().setHighlightEnabled(false)
             barChartView.invalidate()
 
             val xAxis = barChartView.xAxis
@@ -197,8 +212,7 @@ class ProfileFragment : Fragment() {
             barChartView.setVisibleXRangeMinimum(12f)
             barChartView.isDragEnabled = true
 
-            //Y-axis
-            barChartView.axisRight.isEnabled = false
+            barChartView.getAxisRight().setEnabled(false)
             barChartView.setScaleEnabled(true)
 
             val leftAxis = barChartView.axisLeft

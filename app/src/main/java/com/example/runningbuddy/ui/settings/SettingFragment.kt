@@ -38,6 +38,7 @@ class SettingFragment : Fragment() {
             ViewModelProvider(this).get(SettingViewModel::class.java)
         requireActivity().actionBar?.title = "Réglage"
 
+        //Réinitialistion password
         view.findViewById<EditText>(R.id.oldPassword).setText(settingViewModel.oldPassword)
         view.findViewById<EditText>(R.id.oldPassword).addTextChangedListener {
             settingViewModel.oldPassword = it.toString()
@@ -83,6 +84,7 @@ class SettingFragment : Fragment() {
             )
         )
 
+        //Dark mode
         switchBtn.setOnCheckedChangeListener { _, isChecked ->
 
             if (switchBtn.isChecked) {
@@ -97,6 +99,7 @@ class SettingFragment : Fragment() {
             }
         }
 
+        //Spinner unité de mesure
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
