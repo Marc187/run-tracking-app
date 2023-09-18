@@ -1,0 +1,677 @@
+openapi: "3.0.0"
+info:
+  title: Running Buddy - API
+  version: 1.0.0
+  description: >-
+    Voici le fonctionnement de l'API nécessaire à l'application Running
+    Buddy.<br><br>
+
+    Application développée par:
+
+    - Marc Charlebois
+
+    - Éric Larivée 
+
+    - Antoine Lauzon
+tags:
+  - name: connexion
+  - name: course
+  - name: abonnements
+  - name: likes
+paths:
+  /register:
+    post:
+      tags:
+        - connexion
+      summary: Enregistrement d'un nouvel utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+      responses:
+        '201':
+          description: La réponse lorsque l'utilisateur est créé.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - userId
+                  - email
+                properties:
+                  userId:
+                    type: number
+                  email:
+                    type: string
+                example:
+                  userId: 1
+                  email: e1234567@site.com
+        '400':
+          description: Une erreur s'est produite pendant le insert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /login:
+    post:
+      tags:
+        - connexion
+      summary: Connection d'un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                email: test@gmail.com
+                password: hwbkaxbi38ehsd38
+      responses:
+        '201':
+          description: La réponse lorsque l'utilisateur est authentifié.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                example:
+                  token: 2y3rhdy82hw0d9hbAHBSXHKABXI
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
+  /resetPassword:
+    put:
+      tags:
+        - connexion
+      summary: Changement d'un mot de passe d'un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+              example:
+                oldPassword: e1234567
+                newPassword: e7654321
+      responses:
+        '201':
+          description: La réponse lorsque l'utilisateur le mot de passe est modifié.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+                
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+  /course:
+    security:
+      - bearerAuth: []
+    post:
+      summary: Ajout d'une nouvelle course à un utilisateur
+      tags:
+        - course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id_utilisateur
+                - timeStamps
+                - avgSpeedInKMH
+                - distanceInMeters
+                - timeInMillis
+                - caloriesBurned
+              properties:
+                id_utilisateur:
+                  type: integer
+                timeStamps:
+                  type: string
+                avgSpeedInKMH:
+                  type: float
+                distanceInMeters:
+                  type: integer
+                timeInMillis:
+                  type: integer
+                caloriesBurned:
+                  type: integer
+              example:
+                id_utilisateur: 1
+                timeStamps: '2021-11-01'
+                avgSpeedInKMH: 15.85
+                distanceInMeters: 1520
+                timeInMillis: 1334
+                caloriesBurned: 121
+      responses:
+        '201':
+          description: Succès lors de de l'ajout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite lors de l'ajout.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+  /course/image/{id_course}:
+    get:
+      summary: Retourne l'image d'une course
+      tags:
+        - course
+      parameters:
+      - in: path
+        name: id_course
+        schema:
+          type: integer
+        required: true
+        description: Id de la course
+      responses:
+        '201':
+          description: Réponse de succès.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+    post:
+      security:
+        - bearerAuth: []
+      summary: Ajout d'une image à une course
+      tags:
+        - course
+      parameters:
+        - in: path
+          name: id_course
+          schema:
+            type: integer
+          required: true
+          description: Id de la course
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image_course:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Réponse de succès.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
+  /activity:
+    security:
+      - bearerAuth: []
+    get: 
+      summary: Renvoie toutes les courses d'un utilisateur et de ces abonnements
+      tags:
+        - course  
+      responses:
+        '201':
+          description: Renvoie toutes les courses d'un utilisateur et de ces abonnements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
+  /statscourses/{id_utilisateur}:
+    parameters:
+    - in: path
+      name: id_utilisateur
+      schema:
+        type: integer
+      required: true
+      description: Id de l'utilisateur
+    get: 
+      summary: Renvoie les statistiques des courses d'un utilisateur
+      tags:
+        - course  
+      responses:
+        '201':
+          description: Renvoie toutes les statistiques des courses d'un utilisateur
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatsCourses'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'  
+        '404':
+          description: Aucune statistique de course n'a été trouvée.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Not found"
+
+  /subscribe/{id_utilisateur_suivi}:
+    parameters:
+    - in: path
+      name: id_utilisateur_suivi
+      schema:
+        type: string
+      required: true
+      description: Id de l'utilisateur suivi
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - abonnements
+      summary: Abonne un utilisateur à un autre utilisateur
+      responses:
+        '201':
+          description: Utilisateur abonné.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+    delete:
+      tags:
+        - abonnements
+      summary: Désabonne un utilisateur d'un autre utilisateur
+      responses:
+        '201':
+          description: Utilisateur désabonné.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
+    parameters:
+    - in: path
+      name: id_utilisateur
+      schema:
+        type: integer
+      required: true
+      description: Id de l'utilisateur
+    get:
+      tags:
+      - abonnements
+      summary: Renvoie les noms d’utilisateur des abonnements d’un utilisateur
+      responses:
+        '201':
+          description: Renvoie toutes les abonnements d'un utilisateur
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: nom_utilisateur1
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'  
+        '404':
+          description: Utilisateur introuvable.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Not found"
+ 
+  /like/{id_course}/{id_utilisateur}:
+    parameters:
+    - in: path
+      name: id_course
+      schema:
+        type: integer
+      required: true
+      description: Id de la course
+    - in: path
+      name: id_utilisateur
+      schema:
+        type: integer
+      required: true
+      description: Id de l'utilisateur
+    get:
+      tags: 
+      - likes
+      summary: Renvoie un booléen permettant de savoir si un certain utilisateur a aimé une course
+      responses:
+        '201':
+          description: Booléen disant si l'utilisateur aime une course.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - liked
+                properties:
+                  liked:
+                    type: boolean
+                example:
+                  liked: true
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+    post:
+      tags: 
+      - likes
+      summary: Ajoute un « J’aime » à la course d’un utilisateur 
+      responses:
+        '201':
+          description: « J’aime » a été ajouté à la course de l'utilisateur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+    delete:
+      tags: 
+      - likes
+      summary: Supprime un « J’aime » donné à la course d’un utilisateur
+      responses:
+        '201':
+          description: « J’aime » a été retiré de la course de l'utilisateur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '400':
+          description: Réponse lorsqu'une erreur s'est produite.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Non autorisé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuatreCentUn'
+
+components:
+  securitySchemes:
+     bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Utilisateur:
+      type: object
+      required:
+        - nom_utilisateur
+        - nom
+        - email
+        - password
+      properties:
+        nom_utilisateur:
+          type: string
+        nom:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        nom_utilisateur: johndoe123_
+        nom: John Doe
+        email: e1234567@site.com
+        password: e1234567
+    Course:
+      type: object
+      required:
+        - id
+        - id_utilisateur
+        - timeStamps
+        - avgSpeedInKMH
+        - distanceInMeters
+        - timeInMillis
+        - caloriesBurned
+      properties:
+        id:
+          type: integer
+        id_utilisateur:
+          type: integer
+        timeStamps:
+          type: string
+        avgSpeedInKMH:
+          type: float
+        distanceInMeters:
+          type: integer
+        timeInMillis:
+          type: integer
+        caloriesBurned:
+          type: integer
+      example:
+        id: 1
+        id_utilisateur: 1
+        timeStamps: '2021-11-01'
+        avgSpeedInKMH: 15.85
+        distanceInMeters: 1520
+        timeInMillis: 1334
+        caloriesBurned: 121
+    StatsCourses:
+      type: object
+      required:
+        - id_utilisateur
+        - tottemps
+        - totdist
+        - totcalorie
+        - avgspeed
+        - mois
+      properties:
+        id_utilisateur:
+          type: integer
+        tottemps:
+          type: float
+        totdist:
+          type: float
+        totcalorie:
+          type: float
+        avgspeed:
+          type: float
+        mois:
+          type: string
+      example:
+        id_utilisateur: 5
+        tottemps: 13.34
+        totdist: 1520.34
+        totcalorie: 121.87
+        avgspeed: 15.85
+        mois: 2022-11
+    Abonnement:
+      type: object
+      required:
+        - id_utilisateur_suivi
+        - id_utilisateur_suivant
+      properties:
+        id_utilisateur_suivi:
+          type: integer
+        id_utilisateur_suivant:
+          type: integer
+      example:
+        id_utilisateur_suivi: 123
+        id_utilisateur_suivant: 232  
+    ErrorMessage:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      example:
+        message: "Un message d''erreur descriptif."
+    QuatreCentUn:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      example:
+        message: "Not Authorized.  Un message d''erreur descriptif."
+    SuccessMessage:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      example:
+        message: "success"
